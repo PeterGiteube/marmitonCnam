@@ -1,6 +1,5 @@
 <?php
 
-require_once 'model/Model.php';
 class Utilisateur extends Model {
 
     public function getUserByCredentials($userName, $password) {
