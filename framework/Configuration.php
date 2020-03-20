@@ -16,7 +16,7 @@ class Configuration {
     private static function getParameters() {
         if(self::$parameters == null) {
             $filePath = "config/prod.ini";
-
+            
             if(!file_exists($filePath)) {
                 $filePath = "config/dev.ini";
             }
@@ -27,7 +27,7 @@ class Configuration {
                 self::$parameters = parse_ini_file($filePath);
             }
         }
-
+        
         return self::$parameters;
     }
 }

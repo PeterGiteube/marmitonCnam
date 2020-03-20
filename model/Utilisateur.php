@@ -39,6 +39,6 @@ class Utilisateur extends Model {
         $sql = "SELECT id_role FROM utilisateur_role WHERE id_utilisateur = :id_utilisateur AND id_role = :id_role";
         $result = $this->executeRequest($sql, ["id_utilisateur" => $userId, "id_role" => $ADMIN_ROLE_FLAG]);
 
-        return $result;
+        return $result->fetch();
     }
 }

@@ -10,6 +10,7 @@
     <title><?= $title ?></title>
 </head>
 <body class="container m-auto">
+<?= $header ?>
 <?= $content ?>
 </body>
 <script src="public/js/jquery.js"></script>

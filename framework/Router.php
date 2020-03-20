@@ -13,21 +13,30 @@ class Router {
 
     public function request()
     {
+        $uri = $_SERVER['REQUEST_URI'];
+
         if(session_status() != PHP_SESSION_ACTIVE)
             session_start();
 
         try {
-            if(empty($_SESSION)) {
-                if(isset($_GET['action'])) {
-                    if($_GET['action'] == "connexion") {
-                        $this->connexionController->connexion();
-                    } 
-                } else {
+
+            switch($uri) {
+                case '/marmitonCnam/' :
                     $this->homeController->home();
-                }
-            } else {
-                $this->homeController->home();
+                    break;
+                case '/marmitonCnam/login' :
+                    if(empty($_SESSION)) 
+                        $this->connexionController->connexion();
+                    else
+                        $this->homeController->home(); 
+                    break;
+                case '/marmitonCnam/logout':
+                    $this->connexionController->logout();
+                    break;
+                default:
+                    http_response_code(404);
             }
+
         } catch (Exception $ex) {
             $this->error($ex->getMessage());
         }

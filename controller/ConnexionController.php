@@ -26,9 +26,14 @@ class ConnexionController {
             }
         }
 
-
         $view = new View("connexion");
         $view->render(["error" => $this->handleError()]);
+    }
+
+    public function logout() {
+        $_SESSION = [];
+        session_destroy();
+        $this->redirect('/marmitonCnam/');
     }
 
     private function proceedCredentials($userName, $password) {
@@ -37,7 +42,13 @@ class ConnexionController {
         if($this->credentialsValid($result)) {
             $_SESSION['id'] = $result['id_utilisateur'];
             $_SESSION['username'] = $result['pseudo'];
-            $this->redirect("index");
+            $_SESSION['admin_role'] = false;
+
+            if($this->userModel->isUserAdminByUserId($result['id_utilisateur'])) {
+                $_SESSION['admin_role'] = true;
+            }
+
+            $this->redirect("/marmitonCnam/");
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");
         }

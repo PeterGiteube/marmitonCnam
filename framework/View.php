@@ -13,8 +13,12 @@ class View {
     public function render($data) {
         $content = $this->renderFile($this->file, $data);
 
+        $header = 'view/header.php';
+        $headerContent = $this->renderFile($header, []);
+
         $template = 'view/template.php';
-        $templateData = array('title' => $this->title, 'content' => $content);
+        $templateData = array('title' => $this->title, 'header' => $headerContent, 'content' => $content);
+
         $viewContent = $this->renderFile($template, $templateData);
 
         echo $viewContent;
@@ -32,6 +36,24 @@ class View {
         } else {
             throw new Exception("Ficher $file introuvable");
         }
+    }
+
+    public function isUserLoginIn() {
+        if(isset($_SESSION['username'])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isUserAdmin() {
+        if($this->isUserLoginIn()) {
+            $isAdmin = $_SESSION['admin_role'];
+
+            return $isAdmin;
+        }
+
+        return false;
     }
 }
 
