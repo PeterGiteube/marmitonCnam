@@ -1,6 +1,4 @@
-<?php 
-
-session_start();
+<?php
 
 class ConnexionController {
 
@@ -15,16 +13,19 @@ class ConnexionController {
     }
 
     public function connexion() {
-        $userName = $_POST['username'];
-        $password = $_POST['password'];
-             
-        if($userName != null && $password != null) {
-            if(strlen($userName) > 0 && strlen($password) > 0) {
-                $this->proceedCredentials($userName, $password);
-            } else {
-                $this->setConnexionError("Les champs ne peuvent pas être vides");
+        if(!empty($_POST)) {
+            $userName = $_POST['username'];
+            $password = $_POST['password'];
+
+            if($userName != null && $password != null) {
+                if(strlen($userName) > 0 && strlen($password) > 0) {
+                    $this->proceedCredentials($userName, $password);
+                } else {
+                    $this->setConnexionError("Les champs ne peuvent pas être vides");
+                }
             }
         }
+
 
         $view = new View("connexion");
         $view->render(["error" => $this->handleError()]);

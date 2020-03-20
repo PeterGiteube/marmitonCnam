@@ -1,19 +1,20 @@
 <?php 
 
 // framework components
-require_once 'framework/Router.php';
-require_once 'framework/Model.php';
-require_once 'framework/View.php';
-require_once 'framework/redirection/RedirectTrait.php';
+require_once __DIR__ . '/../framework/Configuration.php';
+require_once __DIR__ . '/../framework/Router.php';
+require_once __DIR__ . '/../framework/Model.php';
+require_once __DIR__ . '/../framework/View.php';
+require_once __DIR__ . '/../framework/redirection/RedirectTrait.php';
 
 // controllers
-require_once 'controller/ConnexionController.php';
-require_once 'controller/HomeController.php';
+require_once __DIR__ . '/../controller/ConnexionController.php';
+require_once __DIR__ . '/../controller/HomeController.php';
 
 // models
-require_once 'model/Utilisateur.php';
-require_once 'model/Ingredient.php';
-require_once 'model/Recette.php';
-require_once 'model/Commentaire.php';
+require_once __DIR__ . '/../model/Utilisateur.php';
+require_once __DIR__ . '/../model/Ingredient.php';
+require_once __DIR__ . '/../model/Recette.php';
+require_once __DIR__ . '/../model/Commentaire.php';
 
 ?>

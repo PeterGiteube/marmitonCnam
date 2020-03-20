@@ -13,6 +13,9 @@ class Router {
 
     public function request()
     {
+        if(session_status() != PHP_SESSION_ACTIVE)
+            session_start();
+
         try {
             if(empty($_SESSION)) {
                 if(isset($_GET['action'])) {

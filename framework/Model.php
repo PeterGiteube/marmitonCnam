@@ -17,8 +17,11 @@ abstract class Model {
 
     protected static function getPDO() {
         if (self::$bdd == null) {
-          // Création de la connexion
-          self::$bdd = new PDO("mysql:host=mysql-marmitoncnam.alwaysdata.net;dbname=marmitoncnam_bdd", "202153", "Cnam123");
+            $dns = Configuration::get("dns");
+            $login = Configuration::get("login");
+            $password = Configuration::get("password");
+
+            self::$bdd = new PDO($dns, $login, $password);
         }
 
         return self::$bdd;
