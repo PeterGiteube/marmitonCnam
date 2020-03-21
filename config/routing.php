@@ -10,12 +10,14 @@ $routes->add("marmiton_home", "/")
     ->controller(new HomeController(), "home")
     ->methods(['GET']);
 
+$connexionController = new ConnexionController();
+
 $routes->add("marmiton_login", "/login")
-    ->controller(new ConnexionController(), "connexion")
+    ->controller($connexionController, "connexion")
     ->methods(['GET', 'POST']);
 
 $routes->add("marmiton_logout", "/logout")
-    ->controller(new ConnexionController(), "logout")
+    ->controller($connexionController, "logout")
     ->methods(['GET']);
 
 return $routes->build();
