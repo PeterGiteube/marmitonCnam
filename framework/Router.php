@@ -2,44 +2,62 @@
 
 class Router {
 
+    private $routes;
+
     private $connexionController;
     private $homeController;
 
-    public function __construct()
+    public function __construct($routes)
     {
+        $this->routes = $routes;
+
         $this->connexionController = new ConnexionController();
         $this->homeController = new HomeController();
     }
 
-    public function request()
-    {
+    public function request() {
         $uri = $_SERVER['REQUEST_URI'];
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         if(session_status() != PHP_SESSION_ACTIVE)
             session_start();
 
-        try {
+        $route = $this->getRouteFromURI($uri);
 
-            switch($uri) {
-                case '/marmitonCnam/' :
-                    $this->homeController->home();
-                    break;
-                case '/marmitonCnam/login' :
-                    if(empty($_SESSION)) 
-                        $this->connexionController->connexion();
-                    else
-                        $this->homeController->home(); 
-                    break;
-                case '/marmitonCnam/logout':
-                    $this->connexionController->logout();
-                    break;
-                default:
-                    http_response_code(404);
+        if($route != null) {
+            $params = ['POST' => [], 'GET' => []];
+            $caller = $route->getController()['controller'];
+
+            if(in_array($requestMethod, $route->getMethods())) {
+                if ($requestMethod == 'GET') {
+                    $params['GET'] = $_GET;
+                }
+
+                if ($requestMethod == 'POST') {
+                    $params['POST'] = $_POST;
+                }
+
+                $caller($params);
+            } else {
+                http_response_code(404);
+                echo '404';
             }
-
-        } catch (Exception $ex) {
-            $this->error($ex->getMessage());
+        } else {
+            http_response_code(404);
+            echo '404';
         }
+    }
+
+    private function getRouteFromURI($uri) {
+        $index = Configuration::get("index");
+        foreach ($this->routes as $route) {
+            $path = $index . $route->getPath();
+            if($path == $uri) {
+                return $route;
+            }
+        }
+
+        return null;
     }
 
     private function error($msg) {

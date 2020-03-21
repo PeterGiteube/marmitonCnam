@@ -12,10 +12,12 @@ class ConnexionController {
         $this->error = ""; 
     }
 
-    public function connexion() {
-        if(!empty($_POST)) {
-            $userName = $_POST['username'];
-            $password = $_POST['password'];
+    public function connexion($params) {
+        $post = $params['POST'];
+
+        if(!empty($post)) {
+            $userName = $post['username'];
+            $password = $post['password'];
 
             if($userName != null && $password != null) {
                 if(strlen($userName) > 0 && strlen($password) > 0) {
@@ -33,7 +35,7 @@ class ConnexionController {
     public function logout() {
         $_SESSION = [];
         session_destroy();
-        $this->redirect('/marmitonCnam/');
+        $this->redirect(Configuration::get('index'));
     }
 
     private function proceedCredentials($userName, $password) {
@@ -48,7 +50,7 @@ class ConnexionController {
                 $_SESSION['admin_role'] = true;
             }
 
-            $this->redirect("/marmitonCnam/");
+            $this->redirect(Configuration::get('index'));
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");
         }
