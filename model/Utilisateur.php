@@ -1,5 +1,7 @@
 <?php
 
+use Framework\Model;
+
 class Utilisateur extends Model {
 
     public function getUserByCredentials($userName, $password) {

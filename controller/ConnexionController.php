@@ -1,5 +1,9 @@
 <?php
 
+use Framework\Configuration;
+use Framework\Redirection\RedirectTrait;
+use Framework\View;
+
 class ConnexionController {
 
     use RedirectTrait;
@@ -12,8 +16,8 @@ class ConnexionController {
         $this->error = ""; 
     }
 
-    public function connexion($params) {
-        $post = $params['POST'];
+    public function connexion($request) {
+        $post = $request['POST'];
 
         if(!empty($post)) {
             $userName = $post['username'];

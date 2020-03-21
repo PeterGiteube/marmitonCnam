@@ -1,5 +1,9 @@
 <?php
 
+namespace Framework;
+
+use PDO;
+
 abstract class Model {
 
     private static $bdd;

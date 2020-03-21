@@ -1,16 +1,13 @@
 <?php
 
+use Framework\View;
+
 class HomeController {
 
-    public function home() {
+
+    public function home($request) {
         $view = new View("home");
-        $userName = "Visiteur";
 
-        if(isset($_SESSION['username'])) {
-            $userName = $_SESSION['username'];
-        }
-
-        $data = ["userName" => $userName];
-        $view->render($data);
+        $view->render([]);
     }
 }

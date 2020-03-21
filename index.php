@@ -1,5 +1,7 @@
 <?php
 
+use Framework\Router;
+
 require_once "config/autoloader.php";
 
 try {

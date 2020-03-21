@@ -1,18 +1,14 @@
 <?php
 
+namespace Framework;
+
 class Router {
 
     private $routes;
 
-    private $connexionController;
-    private $homeController;
-
     public function __construct($routes)
     {
         $this->routes = $routes;
-
-        $this->connexionController = new ConnexionController();
-        $this->homeController = new HomeController();
     }
 
     public function request() {
@@ -25,19 +21,13 @@ class Router {
         $route = $this->getRouteFromURI($uri);
 
         if($route != null) {
-            $params = ['POST' => [], 'GET' => []];
+            $request = ['POST' => $_GET, 'GET' => $_POST, 'body' => ""];
             $caller = $route->getController()['controller'];
 
             if(in_array($requestMethod, $route->getMethods())) {
-                if ($requestMethod == 'GET') {
-                    $params['GET'] = $_GET;
-                }
+                $request['body'] = file_get_contents('php://input');
 
-                if ($requestMethod == 'POST') {
-                    $params['POST'] = $_POST;
-                }
-
-                $caller($params);
+                $caller($request);
             } else {
                 http_response_code(404);
                 echo '404';

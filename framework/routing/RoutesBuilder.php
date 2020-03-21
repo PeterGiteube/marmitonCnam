@@ -1,8 +1,23 @@
 <?php
 
+namespace Framework\Routing;
+
+use Exception;
+use ReflectionClass;
+use ReflectionException;
+
 class RoutesBuilder {
 
+
+    /**
+     * @var array
+     */
     private $routes;
+
+
+    /**
+     * @var Route
+     */
     private $pendingRoute;
 
     public function __construct()
@@ -10,7 +25,7 @@ class RoutesBuilder {
         $this->routes = [];
     }
 
-    public function addRoute($name, $path) {
+    public function add($name, $path) {
         $this->checkPendingRoute();
 
         $route = new Route();

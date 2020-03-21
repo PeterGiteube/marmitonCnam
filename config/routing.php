@@ -1,19 +1,21 @@
 <?php
 
-$builder = new RoutesBuilder();
+/** @noinspection PhpUnhandledExceptionInspection */
 
-$builder->addRoute("marmiton_home", "/")
+use Framework\Routing\RoutesBuilder;
+
+$routes = new RoutesBuilder();
+
+$routes->add("marmiton_home", "/")
     ->controller(new HomeController(), "home")
     ->methods(['GET']);
 
-$builder->addRoute("marmiton_login", "/login")
+$routes->add("marmiton_login", "/login")
     ->controller(new ConnexionController(), "connexion")
     ->methods(['GET', 'POST']);
 
-$builder->addRoute("marmiton_login", "/logout")
+$routes->add("marmiton_logout", "/logout")
     ->controller(new ConnexionController(), "logout")
     ->methods(['GET']);
 
-return $builder->build();
-
-?>
+return $routes->build();

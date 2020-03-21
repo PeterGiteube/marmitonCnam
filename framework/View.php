@@ -1,5 +1,9 @@
 <?php
 
+namespace Framework;
+
+use Exception;
+
 class View {
 
     private $file;
@@ -54,6 +58,10 @@ class View {
         }
 
         return false;
+    }
+
+    public function getIndex() {
+        return Configuration::get('index');
     }
 }
 
