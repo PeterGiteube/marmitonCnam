@@ -10,13 +10,17 @@ class ConnexionController {
 
     private $userModel;
     private $error;
+    private $indexLocation;
     
     public function __construct() {
         $this->userModel = new Utilisateur();
-        $this->error = ""; 
+        $this->error = "";
+        $this->indexLocation = Configuration::get("index");
     }
 
-    public function connexion($request) {
+    public function connexion(array $request) {
+        $this->denyAccessUnless('NOT_LOGGED');
+
         $post = $request['POST'];
 
         if(!empty($post)) {
@@ -37,15 +41,17 @@ class ConnexionController {
     }
 
     public function logout() {
+        $this->denyAccessUnless('LOGGED');
+
         $_SESSION = [];
         session_destroy();
-        $this->redirect(Configuration::get('index'));
+        $this->redirect($this->indexLocation);
     }
 
-    private function proceedCredentials($userName, $password) {
+    private function proceedCredentials(string $userName, string $password) {
         $result = $this->getCredentials($userName, $password);
 
-        if($this->credentialsValid($result)) {
+        if($result) {
             $_SESSION['id'] = $result['id_utilisateur'];
             $_SESSION['username'] = $result['pseudo'];
             $_SESSION['admin_role'] = false;
@@ -54,26 +60,30 @@ class ConnexionController {
                 $_SESSION['admin_role'] = true;
             }
 
-            $this->redirect(Configuration::get('index'));
+            $this->redirect($this->indexLocation);
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");
         }
     }
 
     private function getCredentials($userName, $password) { 
-        $userInfos = $this->userModel->getUserByCredentials($userName,$password);
-        return $userInfos;
-    }    
-
-    private function credentialsValid($credentials) {
-        if($credentials) {
-            return true;
-        }
-
-        return false;
+        return $this->userModel->getUserByCredentials($userName,$password);
     }
 
-    private function setConnexionError($message) {
+    private function denyAccessUnless(string $state) {
+        if($state == 'NOT_LOGGED') {
+            if(isset($_SESSION['id'])) {
+                $this->redirect($this->indexLocation);
+            }
+        } else if ($state == 'LOGGED') {
+            if(!isset($_SESSION['id'])) {
+                $this->redirect($this->indexLocation);
+            }
+        }
+    }
+
+
+    private function setConnexionError(string $message) {
         $this->error = $message;
     }
 

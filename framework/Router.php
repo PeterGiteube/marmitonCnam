@@ -21,21 +21,42 @@ class Router {
         $route = $this->getRouteFromURI($uri);
 
         if($route != null) {
-            $request = ['POST' => $_GET, 'GET' => $_POST, 'body' => ""];
             $caller = $route->getController()['controller'];
 
             if(in_array($requestMethod, $route->getMethods())) {
-                $request['body'] = file_get_contents('php://input');
+                $request = $this->createRequest($uri);
+
+                $this->preventUsingSuperglobals();
 
                 $caller($request);
             } else {
-                http_response_code(404);
-                echo '404';
+                $this->display404();
             }
         } else {
-            http_response_code(404);
-            echo '404';
+            $this->display404();
         }
+    }
+
+    private function createRequest($uri) {
+        $body = file_get_contents('php://input');
+
+        return [
+            'POST' => $_POST,
+            'GET' => $_GET,
+            'body' => $body,
+            'uri' => $uri,
+        ];
+    }
+
+    private function preventUsingSuperglobals() {
+        $_POST = [];
+        $_GET = [];
+    }
+
+    private function display404() {
+        http_response_code(404);
+        $view = new View('404');
+        $view->render([]);
     }
 
     private function getRouteFromURI($uri) {
