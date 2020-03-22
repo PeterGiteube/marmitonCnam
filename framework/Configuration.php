@@ -1,5 +1,9 @@
 <?php
 
+namespace Framework;
+
+use Exception;
+
 class Configuration {
     private static $parameters;
 

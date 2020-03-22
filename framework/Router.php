@@ -1,45 +1,74 @@
 <?php
 
+namespace Framework;
+
 class Router {
 
-    private $connexionController;
-    private $homeController;
+    private $routes;
 
-    public function __construct()
+    public function __construct($routes)
     {
-        $this->connexionController = new ConnexionController();
-        $this->homeController = new HomeController();
+        $this->routes = $routes;
     }
 
-    public function request()
-    {
+    public function request() {
         $uri = $_SERVER['REQUEST_URI'];
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
 
         if(session_status() != PHP_SESSION_ACTIVE)
             session_start();
 
-        try {
+        $route = $this->getRouteFromURI($uri);
 
-            switch($uri) {
-                case '/marmitonCnam/' :
-                    $this->homeController->home();
-                    break;
-                case '/marmitonCnam/login' :
-                    if(empty($_SESSION)) 
-                        $this->connexionController->connexion();
-                    else
-                        $this->homeController->home(); 
-                    break;
-                case '/marmitonCnam/logout':
-                    $this->connexionController->logout();
-                    break;
-                default:
-                    http_response_code(404);
+        if($route != null) {
+            $caller = $route->getController()['controller'];
+
+            if(in_array($requestMethod, $route->getMethods())) {
+                $request = $this->createRequest($uri);
+
+                $this->preventUsingSuperglobals();
+
+                $caller($request);
+            } else {
+                $this->display404();
             }
-
-        } catch (Exception $ex) {
-            $this->error($ex->getMessage());
+        } else {
+            $this->display404();
         }
+    }
+
+    private function createRequest($uri) {
+        $body = file_get_contents('php://input');
+
+        return [
+            'POST' => $_POST,
+            'GET' => $_GET,
+            'body' => $body,
+            'uri' => $uri,
+        ];
+    }
+
+    private function preventUsingSuperglobals() {
+        $_POST = [];
+        $_GET = [];
+    }
+
+    private function display404() {
+        http_response_code(404);
+        $view = new View('404');
+        $view->render([]);
+    }
+
+    private function getRouteFromURI($uri) {
+        $index = Configuration::get("index");
+        foreach ($this->routes as $route) {
+            $path = $index . $route->getPath();
+            if($path == $uri) {
+                return $route;
+            }
+        }
+
+        return null;
     }
 
     private function error($msg) {

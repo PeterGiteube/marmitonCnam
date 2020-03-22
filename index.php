@@ -1,9 +1,13 @@
 <?php
 
+use Framework\Router;
+
 require_once "config/autoloader.php";
 
 try {
-    $router = new Router();
+    $routes = include 'config/routing.php';
+
+    $router = new Router($routes);
     $router->request();
 
 } catch (Exception $ex)  {
