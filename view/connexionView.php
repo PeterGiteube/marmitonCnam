@@ -1,7 +1,7 @@
 <?php $this->title = "Connexion" ?>
 
 <div class="border border-primary rounded mt-5 p-5 blockCenter">
-    <h1 class="text-center mb-5">Connexion</h1>
+    <h3 class="text-center mb-5">Connexion</h3>
     <form method="post" action="<?= $this->getIndex() . "/login" ?>">
         <div class="form-group">
             <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Nom d'utilisateur...">

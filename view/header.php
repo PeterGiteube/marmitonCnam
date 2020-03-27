@@ -1,28 +1,46 @@
 <header>
-    <nav class="navbar  navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Marmiton Cnam</a>
-        <div class="navbar-collapse justify-content-end">
-            <ul class="navbar-nav">
-                <?php if(!$this->isUserLoginIn()) { ?>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="<?= $this->getIndex() ?>">Marmiton Cnam</a>
+            <!-- Navbar left -->
+            <div class="navbar-collapse collapse mr-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $this->getIndex() . "/login" ?>">Connectez-vous</a>
+                        <a class="nav-link" href="<?= $this->getIndex() . "/categories" ?>">Recettes</a>
                     </li>
-                <?php } else { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $this->getIndex()  . "/profil" ?>">Profil</a>
+                        <a class="nav-link" href="<?= $this->getIndex() . "/produits" ?>">Ingredients</a>
                     </li>
+                </ul>
+            </div>
 
-                    <?php if($this->isUserAdmin()) { ?>
+            <!-- Navbar right -->
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav ml-auto">
+                    <?php if(!$this->isUserLoginIn()) { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= $this->getIndex()  . "/admin" ?>">Administration</a>
+                            <a class="nav-link" href="<?= $this->getIndex() . "/login" ?>">Connectez-vous</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $this->getIndex() . "/registration" ?>">Inscription</a>
+                        </li>
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $this->getIndex()  . "/profil" ?>">Profil</a>
+                        </li>
+
+                        <?php if($this->isUserAdmin()) { ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= $this->getIndex()  . "/admin" ?>">Administration</a>
+                            </li>
+                        <?php } ?>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= $this->getIndex()  . "/logout" ?>">Déconnexion</a>
                         </li>
                     <?php } ?>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $this->getIndex()  . "/logout" ?>">Déconnexion</a>
-                    </li>
-                <?php } ?>
-            </ul>
+                </ul>
+            </div>
         </div>
     </nav>
 </header>
