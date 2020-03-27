@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use Model\User;
 use Exception;
 
 class View {
@@ -43,18 +44,15 @@ class View {
     }
 
     public function isUserLoginIn() {
-        if(isset($_SESSION['username'])) {
-            return true;
-        }
-
-        return false;
+        return isset($_SESSION['user']);
     }
 
     public function isUserAdmin() {
         if($this->isUserLoginIn()) {
-            $isAdmin = $_SESSION['admin_role'];
+            $user = $_SESSION['user'];
+            $role = $user->getRole();
 
-            return $isAdmin;
+            return $role > 1;
         }
 
         return false;

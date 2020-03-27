@@ -8,12 +8,12 @@ class ConnexionController {
 
     use RedirectTrait;
 
-    private $userModel;
+    private $userDAO;
     private $error;
     private $indexLocation;
     
     public function __construct() {
-        $this->userModel = new Utilisateur();
+        $this->userDAO = new UserDao();
         $this->error = "";
         $this->indexLocation = Configuration::get("index");
     }
@@ -49,16 +49,10 @@ class ConnexionController {
     }
 
     private function proceedCredentials(string $userName, string $password) {
-        $result = $this->getCredentials($userName, $password);
+        $user = $this->userDAO->getUserByCredentials($userName,$password);
 
-        if($result) {
-            $_SESSION['id'] = $result['id_utilisateur'];
-            $_SESSION['username'] = $result['pseudo'];
-            $_SESSION['admin_role'] = false;
-
-            if($this->userModel->isUserAdminByUserId($result['id_utilisateur'])) {
-                $_SESSION['admin_role'] = true;
-            }
+        if($user) {
+            $_SESSION['user'] = $user;
 
             $this->redirect($this->indexLocation);
         } else {
@@ -66,17 +60,14 @@ class ConnexionController {
         }
     }
 
-    private function getCredentials($userName, $password) { 
-        return $this->userModel->getUserByCredentials($userName,$password);
-    }
-
     private function denyAccessUnless(string $state) {
+
         if($state == 'NOT_LOGGED') {
-            if(isset($_SESSION['id'])) {
+            if(isset($_SESSION['user'])) {
                 $this->redirect($this->indexLocation);
             }
         } else if ($state == 'LOGGED') {
-            if(!isset($_SESSION['id'])) {
+            if(!isset($_SESSION['user'])) {
                 $this->redirect($this->indexLocation);
             }
         }

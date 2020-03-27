@@ -2,10 +2,10 @@
 
 namespace Framework;
 
+use Framework\Configuration;
 use PDO;
 
-abstract class Model {
-
+abstract class Dao {
     private static $bdd;
 
     protected function executeRequest($sql, $params = null) {
@@ -29,7 +29,5 @@ abstract class Model {
         }
 
         return self::$bdd;
-      }
+    }
 }
-
-?>
