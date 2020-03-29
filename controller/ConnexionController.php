@@ -1,12 +1,9 @@
 <?php
 
 use Framework\Configuration;
-use Framework\Redirection\RedirectTrait;
 use Framework\View;
 
-class ConnexionController {
-
-    use RedirectTrait;
+class ConnexionController extends Controller {
 
     private $userDAO;
     private $error;
@@ -18,8 +15,8 @@ class ConnexionController {
         $this->indexLocation = Configuration::get("index");
     }
 
-    public function connexion(array $request) {
-        $this->denyAccessUnless('NOT_LOGGED');
+    public function login(array $request) {
+        $this->allowAccessOnlyFor('ANONYMOUS');
 
         $post = $request['POST'];
 
@@ -41,7 +38,7 @@ class ConnexionController {
     }
 
     public function logout() {
-        $this->denyAccessUnless('LOGGED');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $_SESSION = [];
         session_destroy();
@@ -57,19 +54,6 @@ class ConnexionController {
             $this->redirect($this->indexLocation);
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");
-        }
-    }
-
-    private function denyAccessUnless(string $state) {
-
-        if($state == 'NOT_LOGGED') {
-            if(isset($_SESSION['user'])) {
-                $this->redirect($this->indexLocation);
-            }
-        } else if ($state == 'LOGGED') {
-            if(!isset($_SESSION['user'])) {
-                $this->redirect($this->indexLocation);
-            }
         }
     }
 

@@ -26,7 +26,7 @@
                         </li>
                     <?php } else { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= $this->getIndex()  . "/profil" ?>">Profil</a>
+                            <a class="nav-link" href="<?= $this->getIndex()  . "/profile" ?>">Profil</a>
                         </li>
 
                         <?php if($this->isUserAdmin()) { ?>
