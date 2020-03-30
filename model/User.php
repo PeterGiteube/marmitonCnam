@@ -1,6 +1,8 @@
 <?php
 
-class User {
+use Framework\UserRoleInterface;
+
+class User implements UserRoleInterface {
     private $id;
     private $pseudo;
     private $password;
@@ -153,5 +155,16 @@ class User {
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+    }
+
+    public function getAccessRole() : string
+    {
+        if($this->role == 1)
+            return 'ROLE_USER';
+
+        if($this->role > 1)
+            return 'ROLE_ADMIN';
+
+        return 'ANONYMOUS';
     }
 }

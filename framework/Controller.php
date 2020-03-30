@@ -2,6 +2,7 @@
 
 use Framework\Redirection\RedirectTrait;
 use Framework\Configuration;
+use Framework\UserRoleInterface;
 
 abstract class Controller {
 
@@ -9,35 +10,41 @@ abstract class Controller {
 
     private static $defaultRedirectionLocation;
 
-    protected function denyAccessUnlessGranted(string $state) {
-        
-        if ($state == 'ROLE_USER') {
-            if(!isset($_SESSION['user'])) {
-                $this->redirect(self::getRedirectionLocation());
-            }
-        } else if( $state == 'ROLE_ADMIN') {
-            if(!isset($_SESSION['user'])) {
-                $this->redirect(self::getRedirectionLocation());
-            } else {
-                $user = $_SESSION['user'];
-                $role = $user->getRole();
+    const roles = [
+        'USER' => 'ROLE_USER',
+        'ADMIN' => 'ROLE_ADMIN'
+    ];
 
-                if ($role < 2 ) $this->redirect(self::getRedirectionLocation());
+    const ANONYMOUS = 'ANONYMOUS';
+
+    protected function denyAccessUnlessGranted(string $state) {
+        if(!isset($_SESSION['user']))
+            $this->redirect(self::getRedirectionLocation());
+
+        $user = self::getUser();
+        $role = $user->getAccessRole();
+
+        if($state == self::roles['ADMIN']) {
+            if($role != $state) {
+                $this->redirect(self::getRedirectionLocation());
             }
         }
     }
 
     protected function allowAccessOnlyFor(string $state) {
-        if($state == 'ANONYMOUS') {
+        if($state == self::ANONYMOUS) {
             if(isset($_SESSION['user'])) {
                 $this->redirect(self::getRedirectionLocation());
             }
-        } else if ($state == 'ROLE_USER') {
-            if(!isset($_SESSION['user'])) {
+        }
+
+        if(isset($_SESSION['user'])) {
+            $user = self::getUser();
+            $role = $user->getAccessRole();
+
+            if($state != $role) {
                 $this->redirect(self::getRedirectionLocation());
             }
-        } else if ($state == 'ROLE_ADMIN') {
-            $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
     }
 
@@ -47,5 +54,9 @@ abstract class Controller {
         }
 
         return self::$defaultRedirectionLocation;
+    }
+
+    private static function getUser() : UserRoleInterface {
+        return $_SESSION['user'];
     }
 }
