@@ -2,3 +2,11 @@
     margin: 0 auto;
     width:50%;
 }
+
+#profileTab {
+    width: 30%;
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+    margin-top: 10%;
+}

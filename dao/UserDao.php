@@ -25,9 +25,9 @@ class UserDao extends Dao {
     private function createUser($queryResult) {
         $user = new User();
         $user->setId($queryResult['id_utilisateur']);
+        $user->setFirstName($queryResult['nom']);
         $user->setPseudo($queryResult['pseudo']);
-        $user->setLastName($queryResult['nom']);
-        $user->setFirstName($queryResult['prenom']);
+        $user->setLastName($queryResult['prenom']);
         $user->setEmail($queryResult['mail']);
         $user->setPhoneNumber($queryResult['telephone']);
         $user->setCity($queryResult['ville']);

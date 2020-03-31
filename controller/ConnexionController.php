@@ -15,7 +15,7 @@ class ConnexionController extends Controller {
         $this->indexLocation = Configuration::get("index");
     }
 
-    public function login(array $request) {
+    public function login(array $request) { 
         $this->allowAccessOnlyFor('ANONYMOUS');
 
         $post = $request['POST'];

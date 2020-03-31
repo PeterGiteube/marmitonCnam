@@ -2,47 +2,37 @@
 
 <?php /** @var User $user */ ?>
 
-<div class="container mt-5 pt-5">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="row">
-                    <div class="col-12">
-                        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content ml-1" id="myTabContent">
-                            <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">Full Name</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        <?= $user->getFirstName() . " " . $user->getLastName() ?>
-                                    </div>
-                                </div>
-                                <hr />
-
-                                <div class="row">
-                                    <div class="col-sm-3 col-md-2 col-5">
-                                        <label style="font-weight:bold;">City</label>
-                                    </div>
-                                    <div class="col-md-8 col-6">
-                                        <?= $user->getCity() ?>
-                                    </div>
-                                </div>
-                                <hr />
-
-                            </div>
-                            <div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-                                Facebook, Google, Twitter Account that are connected to this account
-                            </div>
-                        </div>
-                    </div>
+<div id="profileTab" class="border border-secondary rounded p-5">
+    <nav>
+        <div class="nav nav-tabs text-center" role="tablist">
+            <a class="nav-item nav-link active w-50" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Profile</a>
+            <a class="nav-item nav-link w-50" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Sécurité</a>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active text-center mt-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <form>
+                <div class="form-group p-2">
+                    <label for="changePseudo">Pseudo</label>
+                    <input type="text" class="form-control" id="changePseudo" value="<?= $user->getPseudo()?>">
                 </div>
-            </div>
+                <div class="form-group p-2">
+                    <label for="changeFistName">Prénom</label>
+                    <input type="text" class="form-control" id="changePseudo" value="<?= $user->getFirstName()?>">
+                </div>
+                <div class="form-group p-2">
+                    <label for="changePseudo">Nom</label>
+                    <input type="text" class="form-control" id="changePseudo" value="<?= $user->getLastName()?>">
+                </div>
+                <div class="form-group p-2">
+                    <label for="changeCity">Ville</label>
+                    <input type="text" class="form-control" id="changeCity" value="<?= $user->getCity()?>">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Sauvegarder les modifications</button>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            
         </div>
     </div>
 </div>

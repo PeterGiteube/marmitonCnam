@@ -59,11 +59,12 @@ class RoutesBuilder {
         }
 
         try {
+            // get_class($homeController) => HomeController
             $class = new ReflectionClass(get_class($controllerInstance));
             $reflectionMethod = $class->getMethod($methodName);
 
             $controller = function($params) use (&$reflectionMethod, $controllerInstance) {
-                $reflectionMethod->invoke($controllerInstance, $params);
+                $reflectionMethod->invoke($controllerInstance, $params); 
             };
 
             $this->pendingRoute->setController(['class_instance' => $controllerInstance, "controller" => $controller]);

@@ -22,7 +22,7 @@ class Router {
 
         if($route != null) {
             $caller = $route->getController()['controller'];
-
+            
             if(in_array($requestMethod, $route->getMethods())) {
                 $request = $this->createRequest($uri);
 
@@ -62,7 +62,7 @@ class Router {
     private function getRouteFromURI($uri) {
         $index = Configuration::get("index");
         foreach ($this->routes as $route) {
-            $path = $index . $route->getPath();
+            $path = $index . $route->getPath(); 
             if($path == $uri) {
                 return $route;
             }
