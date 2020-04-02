@@ -13,14 +13,14 @@ abstract class Controller {
     /**
      * @var RoleChecker
      */
-    private $authorizationChecker;
+    private $roleChecker;
 
-    public function setAuthorizationChecker(RoleChecker $authorizationChecker) {
-        $this->authorizationChecker = $authorizationChecker;
+    public function setRoleChecker(RoleChecker $roleChecker) {
+        $this->roleChecker = $roleChecker;
     }
 
     protected function denyAccessUnlessGranted(string $role) {
-        if(!$this->authorizationChecker->hasRole($role)) {
+        if(!$this->roleChecker->hasRole($role)) {
             $this->redirect(self::getRedirectionLocation());
         }
     }

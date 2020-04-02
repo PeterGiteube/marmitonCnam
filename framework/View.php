@@ -13,7 +13,7 @@ class View {
     /**
      * @var RoleChecker
      */
-    private $authorizationChecker;
+    private $roleChecker;
 
     public function __construct($action, $data)
     {
@@ -21,8 +21,8 @@ class View {
         $this->data = $data;
     }
 
-    public function setAuthorizationChecker(RoleChecker $authorizationChecker) {
-        $this->authorizationChecker = $authorizationChecker;
+    public function setRoleChecker(RoleChecker $roleChecker) {
+        $this->roleChecker = $roleChecker;
     }
 
     public function render() {
@@ -54,7 +54,7 @@ class View {
     }
 
     private function hasRole($role) {
-        return $this->authorizationChecker->hasRole($role);
+        return $this->roleChecker->hasRole($role);
     }
 
     public function getIndex() {

@@ -27,7 +27,7 @@ class Router {
             $controllerInvoker = $route->getController()['controller'];
             $controllerInstance = $route->getController()['class_instance'];
             if(is_subclass_of($controllerInstance, 'Controller')) {
-                $controllerInstance->setAuthorizationChecker($authorizationChecker);
+                $controllerInstance->setRoleChecker($authorizationChecker);
             }
 
             if($this->requestMethodValid($requestMethod, $route)) {
@@ -42,7 +42,7 @@ class Router {
             http_response_code(404);
         }
 
-        $view->setAuthorizationChecker($authorizationChecker);
+        $view->setRoleChecker($authorizationChecker);
         $view->render();
     }
 
