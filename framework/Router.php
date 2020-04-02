@@ -12,29 +12,38 @@ class Router {
     }
 
     public function request() {
+        $this->startSession();
+
         $uri = $_SERVER['REQUEST_URI'];
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        if(session_status() != PHP_SESSION_ACTIVE)
-            session_start();
+        $view = new View('404', []);
 
-        $route = $this->getRouteFromURI($uri);
+        $authorizationChecker = new RoleChecker();
 
-        if($route != null) {
-            $caller = $route->getController()['controller'];
-            
-            if(in_array($requestMethod, $route->getMethods())) {
+        if($this->routeIsValid($uri)) {
+            $route = $this->getRoute($uri);
+
+            $controllerInvoker = $route->getController()['controller'];
+            $controllerInstance = $route->getController()['class_instance'];
+            if(is_subclass_of($controllerInstance, 'Controller')) {
+                $controllerInstance->setAuthorizationChecker($authorizationChecker);
+            }
+
+            if($this->requestMethodValid($requestMethod, $route)) {
                 $request = $this->createRequest($uri);
 
-                $this->preventUsingSuperglobals();
-
-                $caller($request);
+                /** @var View $view */
+                $view = $controllerInvoker($request);
             } else {
-                $this->display404();
+                http_response_code(404);
             }
         } else {
-            $this->display404();
+            http_response_code(404);
         }
+
+        $view->setAuthorizationChecker($authorizationChecker);
+        $view->render();
     }
 
     private function createRequest($uri) {
@@ -48,30 +57,33 @@ class Router {
         ];
     }
 
-    private function preventUsingSuperglobals() {
-        $_POST = [];
-        $_GET = [];
+    private function requestMethodValid($requestMethod, $route) {
+        return in_array($requestMethod, $route->getMethods());
     }
 
-    private function display404() {
-        http_response_code(404);
-        $view = new View('404');
-        $view->render([]);
-    }
-
-    private function getRouteFromURI($uri) {
-        $index = Configuration::get("index");
+    private function routeIsValid($uri) {
         foreach ($this->routes as $route) {
-            $path = $index . $route->getPath(); 
+            $path = $route->getPath();
             if($path == $uri) {
-                return $route;
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 
-    private function error($msg) {
-        echo $msg;
+    private function getRoute($uri) {
+        $result = array_filter($this->routes, function($element) use(&$uri) {
+            return $element->getPath() == $uri;
+        });
+
+        $values = array_values($result);
+
+        return $values[0];
+    }
+
+    private function startSession() {
+        if(session_status() != PHP_SESSION_ACTIVE)
+            session_start();
     }
 }

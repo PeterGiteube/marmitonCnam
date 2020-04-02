@@ -16,7 +16,7 @@ class ConnexionController extends Controller {
     }
 
     public function login(array $request) { 
-        $this->allowAccessOnlyFor('ANONYMOUS');
+        $this->denyAccessUnlessGranted('ANONYMOUS');
 
         $post = $request['POST'];
 
@@ -33,8 +33,7 @@ class ConnexionController extends Controller {
             }
         }
 
-        $view = new View("connexion");
-        $view->render(["error" => $this->handleError()]);
+        return new View("connexion", ["error" => $this->handleError()]);
     }
 
     public function logout() {

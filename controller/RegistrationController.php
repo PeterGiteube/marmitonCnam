@@ -5,9 +5,8 @@ use Framework\View;
 class RegistrationController extends Controller {
 
     public function registration() {
-        $this->allowAccessOnlyFor('ANONYMOUS');
+        $this->denyAccessUnlessGranted('ANONYMOUS');
 
-        $view = new View('registration');
-        $view->render([]);
+        return new View('registration', []);
     }
 }

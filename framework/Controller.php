@@ -1,8 +1,8 @@
 <?php
 
+use Framework\RoleChecker;
 use Framework\Redirection\RedirectTrait;
 use Framework\Configuration;
-use Framework\UserRoleInterface;
 
 abstract class Controller {
 
@@ -10,41 +10,18 @@ abstract class Controller {
 
     private static $defaultRedirectionLocation;
 
-    const roles = [
-        'USER' => 'ROLE_USER',
-        'ADMIN' => 'ROLE_ADMIN'
-    ];
+    /**
+     * @var RoleChecker
+     */
+    private $authorizationChecker;
 
-    const ANONYMOUS = 'ANONYMOUS';
-
-    protected function denyAccessUnlessGranted(string $state) {
-        if(!isset($_SESSION['user']))
-            $this->redirect(self::getRedirectionLocation());
-
-        $user = self::getUser();
-        $role = $user->getAccessRole();
-
-        if($state == self::roles['ADMIN']) {
-            if($role != $state) {
-                $this->redirect(self::getRedirectionLocation());
-            }
-        }
+    public function setAuthorizationChecker(RoleChecker $authorizationChecker) {
+        $this->authorizationChecker = $authorizationChecker;
     }
 
-    protected function allowAccessOnlyFor(string $state) {
-        if($state == self::ANONYMOUS) {
-            if(isset($_SESSION['user'])) {
-                $this->redirect(self::getRedirectionLocation());
-            }
-        }
-
-        if(isset($_SESSION['user'])) {
-            $user = self::getUser();
-            $role = $user->getAccessRole();
-
-            if($state != $role) {
-                $this->redirect(self::getRedirectionLocation());
-            }
+    protected function denyAccessUnlessGranted(string $role) {
+        if(!$this->authorizationChecker->hasRole($role)) {
+            $this->redirect(self::getRedirectionLocation());
         }
     }
 
@@ -54,9 +31,5 @@ abstract class Controller {
         }
 
         return self::$defaultRedirectionLocation;
-    }
-
-    private static function getUser() : UserRoleInterface {
-        return $_SESSION['user'];
     }
 }

@@ -11,6 +11,7 @@ require_once __DIR__ . '/../framework/View.php';
 require_once __DIR__ . '/../framework/Dao.php';
 require_once __DIR__ . '/../framework/Controller.php';
 require_once __DIR__ . '/../framework/UserRoleInterface.php';
+require_once __DIR__ . '/../framework/RoleChecker.php';
 
 // Controllers
 require_once __DIR__ . '/../controller/ConnexionController.php';

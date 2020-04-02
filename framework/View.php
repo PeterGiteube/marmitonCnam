@@ -2,21 +2,31 @@
 
 namespace Framework;
 
-use Model\User;
 use Exception;
 
 class View {
 
     private $file;
     private $title;
+    private $data;
 
-    public function __construct($action)
+    /**
+     * @var RoleChecker
+     */
+    private $authorizationChecker;
+
+    public function __construct($action, $data)
     {
         $this->file = "view/" . $action . "View.php";
+        $this->data = $data;
     }
 
-    public function render($data) {
-        $content = $this->renderFile($this->file, $data);
+    public function setAuthorizationChecker(RoleChecker $authorizationChecker) {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+    public function render() {
+        $content = $this->renderFile($this->file, $this->data);
 
         $header = 'view/header.php';
         $headerContent = $this->renderFile($header, []);
@@ -39,23 +49,12 @@ class View {
 
             return ob_get_clean();
         } else {
-            throw new Exception("Ficher $file introuvable");
+            throw new Exception("Fichier $file introuvable");
         }
     }
 
-    public function isUserLoginIn() {
-        return isset($_SESSION['user']);
-    }
-
-    public function isUserAdmin() {
-        if($this->isUserLoginIn()) {
-            $user = $_SESSION['user'];
-            $role = $user->getRole();
-
-            return $role > 1;
-        }
-
-        return false;
+    private function hasRole($role) {
+        return $this->authorizationChecker->hasRole($role);
     }
 
     public function getIndex() {

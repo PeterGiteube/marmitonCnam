@@ -9,7 +9,6 @@ class ProfileController extends Controller {
 
         $user = $_SESSION['user'];
 
-        $view = new View("profile");
-        $view->render(['user' => $user]);
+        return new View("profile", ['user' => $user]);
     }
 }

@@ -17,7 +17,7 @@
             <!-- Navbar right -->
             <div class="navbar-collapse collapse">
                 <ul class="navbar-nav ml-auto">
-                    <?php if(!$this->isUserLoginIn()) { ?>
+                    <?php if(!$this->hasRole('ROLE_USER')) { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= $this->getIndex() . "/login" ?>">Connectez-vous</a>
                         </li>
@@ -29,7 +29,7 @@
                             <a class="nav-link" href="<?= $this->getIndex()  . "/profile" ?>">Profil</a>
                         </li>
 
-                        <?php if($this->isUserAdmin()) { ?>
+                        <?php if($this->hasRole('ROLE_ADMIN')) { ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= $this->getIndex()  . "/admin" ?>">Administration</a>
                             </li>
