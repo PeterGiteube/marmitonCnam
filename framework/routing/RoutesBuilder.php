@@ -3,6 +3,7 @@
 namespace Framework\Routing;
 
 use Exception;
+use Framework\Configuration;
 use ReflectionClass;
 use ReflectionException;
 
@@ -30,7 +31,7 @@ class RoutesBuilder {
 
         $route = new Route();
         $route->setName($name);
-        $route->setPath($path);
+        $route->setPath(Configuration::get('index') . $path);
 
         $this->pendingRoute = $route;
         array_push($this->routes, $route);
@@ -63,7 +64,7 @@ class RoutesBuilder {
             $reflectionMethod = $class->getMethod($methodName);
 
             $controller = function($params) use (&$reflectionMethod, $controllerInstance) {
-                $reflectionMethod->invoke($controllerInstance, $params);
+                return $reflectionMethod->invoke($controllerInstance, $params);
             };
 
             $this->pendingRoute->setController(['class_instance' => $controllerInstance, "controller" => $controller]);
@@ -72,17 +73,6 @@ class RoutesBuilder {
         }
 
         return $this;
-    }
-
-    public function getControllerFromRouteName($name) {
-        foreach ($this->routes as $route)  {
-            if($route->getName() == $name) {
-                $controller = $route->getController();
-                return $controller['class_instance'];
-            }
-        }
-
-        throw new Exception("Controller doesn't exist");
     }
 
     public function build() {

@@ -8,14 +8,25 @@ class View {
 
     private $file;
     private $title;
+    private $data;
 
-    public function __construct($action)
+    /**
+     * @var RoleChecker
+     */
+    private $roleChecker;
+
+    public function __construct($action, $data)
     {
         $this->file = "view/" . $action . "View.php";
+        $this->data = $data;
     }
 
-    public function render($data) {
-        $content = $this->renderFile($this->file, $data);
+    public function setRoleChecker(RoleChecker $roleChecker) {
+        $this->roleChecker = $roleChecker;
+    }
+
+    public function render() {
+        $content = $this->renderFile($this->file, $this->data);
 
         $header = 'view/header.php';
         $headerContent = $this->renderFile($header, []);
@@ -38,26 +49,12 @@ class View {
 
             return ob_get_clean();
         } else {
-            throw new Exception("Ficher $file introuvable");
+            throw new Exception("Fichier $file introuvable");
         }
     }
 
-    public function isUserLoginIn() {
-        if(isset($_SESSION['username'])) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isUserAdmin() {
-        if($this->isUserLoginIn()) {
-            $isAdmin = $_SESSION['admin_role'];
-
-            return $isAdmin;
-        }
-
-        return false;
+    private function hasRole($role) {
+        return $this->roleChecker->hasRole($role);
     }
 
     public function getIndex() {

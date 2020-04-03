@@ -1,25 +1,22 @@
 <?php
 
 use Framework\Configuration;
-use Framework\Redirection\RedirectTrait;
 use Framework\View;
 
-class ConnexionController {
+class ConnexionController extends Controller {
 
-    use RedirectTrait;
-
-    private $userModel;
+    private $userDAO;
     private $error;
     private $indexLocation;
     
     public function __construct() {
-        $this->userModel = new Utilisateur();
+        $this->userDAO = new UserDao();
         $this->error = "";
         $this->indexLocation = Configuration::get("index");
     }
 
-    public function connexion(array $request) {
-        $this->denyAccessUnless('NOT_LOGGED');
+    public function login(array $request) { 
+        $this->denyAccessUnlessGranted('ANONYMOUS');
 
         $post = $request['POST'];
 
@@ -36,12 +33,11 @@ class ConnexionController {
             }
         }
 
-        $view = new View("connexion");
-        $view->render(["error" => $this->handleError()]);
+        return new View("connexion", ["error" => $this->handleError()]);
     }
 
     public function logout() {
-        $this->denyAccessUnless('LOGGED');
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $_SESSION = [];
         session_destroy();
@@ -49,36 +45,14 @@ class ConnexionController {
     }
 
     private function proceedCredentials(string $userName, string $password) {
-        $result = $this->getCredentials($userName, $password);
+        $user = $this->userDAO->getUserByCredentials($userName,$password);
 
-        if($result) {
-            $_SESSION['id'] = $result['id_utilisateur'];
-            $_SESSION['username'] = $result['pseudo'];
-            $_SESSION['admin_role'] = false;
-
-            if($this->userModel->isUserAdminByUserId($result['id_utilisateur'])) {
-                $_SESSION['admin_role'] = true;
-            }
+        if($user) {
+            $_SESSION['user'] = $user;
 
             $this->redirect($this->indexLocation);
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");
-        }
-    }
-
-    private function getCredentials($userName, $password) { 
-        return $this->userModel->getUserByCredentials($userName,$password);
-    }
-
-    private function denyAccessUnless(string $state) {
-        if($state == 'NOT_LOGGED') {
-            if(isset($_SESSION['id'])) {
-                $this->redirect($this->indexLocation);
-            }
-        } else if ($state == 'LOGGED') {
-            if(!isset($_SESSION['id'])) {
-                $this->redirect($this->indexLocation);
-            }
         }
     }
 

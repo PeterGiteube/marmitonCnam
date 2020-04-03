@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="public/css/bootstrap.css">
     <title><?= $title ?></title>
 </head>
-<body class="container m-auto">
+<body>
 <?= $header ?>
 <?= $content ?>
 </body>
