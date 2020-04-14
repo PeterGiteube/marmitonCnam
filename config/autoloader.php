@@ -18,6 +18,7 @@ require_once __DIR__ . '/../controller/ConnexionController.php';
 require_once __DIR__ . '/../controller/HomeController.php';
 require_once __DIR__ . '/../controller/ProfileController.php';
 require_once __DIR__ . '/../controller/RegistrationController.php';
+require_once __DIR__ . '/../controller/AdminController.php';
 
 // DAO
 require_once __DIR__ . '/../dao/UserDao.php';

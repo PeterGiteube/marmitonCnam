@@ -16,24 +16,24 @@ class RoleChecker {
             if($role == self::ANONYMOUS) {
                 return true;
             }
-        }
-
-        if(isset($_SESSION['user'])) {
-            $user = self::getUser();
-            $userRole = $user->getAccessRole();
-
-            if($role == self::roles['USER']) {
-                return true;
-            }
-
-            if($role == self::roles['ADMIN']) {
-                if($userRole == $role) {
-                    return true;
-                }
-            }
 
             return false;
         }
+        
+        $user = self::getUser();
+        $userRole = $user->getAccessRole();
+
+        if($role == self::roles['USER']) {
+            return true;
+        }
+
+        if($role == self::roles['ADMIN']) {
+            if($userRole == $role) {
+                return true;
+            }
+        }   
+
+        return false;
     }
 
     private static function getUser() : UserRoleInterface {

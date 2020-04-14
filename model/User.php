@@ -159,12 +159,12 @@ class User implements UserRoleInterface {
 
     public function getAccessRole() : string
     {
-        if($this->role == 1)
-            return 'ROLE_USER';
+        if($this->role == "USER")
+            return "ROLE_USER";
 
-        if($this->role > 1)
-            return 'ROLE_ADMIN';
+        if($this->role == "ADMIN")
+            return "ROLE_ADMIN";
 
-        return 'ANONYMOUS';
+        return "ANONYMOUS";
     }
 }

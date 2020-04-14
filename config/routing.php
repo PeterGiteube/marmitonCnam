@@ -26,6 +26,10 @@ $routes->add("marmiton_profile", "/profile")
 
 $routes->add("marmiton_registration", "/registration")
     ->controller(new RegistrationController(), "registration")
-    ->methods(['POST', 'GET']);
+    ->methods(['GET', 'POST']);
+
+$routes->add("marmiton_administration", "/admin")
+    ->controller(new AdminController(), "admin")
+    ->methods(['GET']);
 
 return $routes->build();
