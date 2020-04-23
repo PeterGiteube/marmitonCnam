@@ -19,6 +19,9 @@ require_once __DIR__ . '/../controller/HomeController.php';
 require_once __DIR__ . '/../controller/ProfileController.php';
 require_once __DIR__ . '/../controller/RegistrationController.php';
 require_once __DIR__ . '/../controller/AdminController.php';
+require_once __DIR__ . '/../controller/WaitingRecipeController.php';
+require_once __DIR__ . '/../controller/ValidateRecipeController.php';
+require_once __DIR__ . '/../controller/ManageUserController.php';
 
 // DAO
 require_once __DIR__ . '/../dao/UserDao.php';

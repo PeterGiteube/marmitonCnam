@@ -12,10 +12,12 @@
     <title><?= $title ?></title>
 </head>
 <body>
-<?= $header ?>
-<?= $content ?>
+    <?= $header ?>
+    <?= $content ?>
 </body>
 <script src="public/js/jquery.js"></script>
 <script src="public/js/popper.js"></script>
+<script src="public/js/fontawesome/all.js"></script>
+<script src="public/js/sb-admin/sb-admin.js"></script>
 <script src="public/js/bootstrap.js"></script>
 </html>

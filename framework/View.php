@@ -4,7 +4,8 @@ namespace Framework;
 
 use Exception;
 
-class View {
+class View
+{
 
     private $file;
     private $title;
@@ -21,11 +22,13 @@ class View {
         $this->data = $data;
     }
 
-    public function setRoleChecker(RoleChecker $roleChecker) {
+    public function setRoleChecker(RoleChecker $roleChecker)
+    {
         $this->roleChecker = $roleChecker;
     }
 
-    public function render() {
+    public function render()
+    {
         $content = $this->renderFile($this->file, $this->data);
 
         $header = 'view/header.php';
@@ -39,8 +42,9 @@ class View {
         echo $viewContent;
     }
 
-    private function renderFile($file, $data) {
-        if(file_exists($file)) {
+    private function renderFile($file, $data)
+    {
+        if (file_exists($file)) {
             extract($data);
 
             ob_start();
@@ -53,11 +57,13 @@ class View {
         }
     }
 
-    private function hasRole($role) {
+    private function hasRole($role)
+    {
         return $this->roleChecker->hasRole($role);
     }
 
-    public function getIndex() {
+    public function getIndex()
+    {
         return Configuration::get('index');
     }
 }
