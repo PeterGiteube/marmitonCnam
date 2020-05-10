@@ -1,5 +1,6 @@
 <?php
 
+use Framework\Controller\Controller;
 use Framework\View;
 
 class RegistrationController extends Controller {

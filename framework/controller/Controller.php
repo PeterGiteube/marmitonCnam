@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework\Controller;
+
 use Framework\RoleChecker;
 use Framework\Redirection\RedirectTrait;
 use Framework\Configuration;

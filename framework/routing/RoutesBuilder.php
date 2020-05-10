@@ -9,12 +9,10 @@ use ReflectionException;
 
 class RoutesBuilder {
 
-
     /**
-     * @var array
+     * @var Route[]
      */
     private $routes;
-
 
     /**
      * @var Route
@@ -50,7 +48,6 @@ class RoutesBuilder {
         }
 
         $this->pendingRoute->setMethods($methods);
-
         return $this;
     }
 
@@ -59,24 +56,20 @@ class RoutesBuilder {
             throw new Exception("Controller can't be null");
         }
 
-        try {
-            $class = new ReflectionClass(get_class($controllerInstance));
-            $reflectionMethod = $class->getMethod($methodName);
-
-            $controller = function($params) use (&$reflectionMethod, $controllerInstance) {
-                return $reflectionMethod->invoke($controllerInstance, $params);
-            };
-
-            $this->pendingRoute->setController(['class_instance' => $controllerInstance, "controller" => $controller]);
-        } catch (ReflectionException $e) {
-            throw $e;
-        }
-
+        $this->pendingRoute->setController(['class_instance' => $controllerInstance, "controller" => $methodName]);
         return $this;
     }
 
     public function build() {
-        return $this->routes;
+        $staticRoutes = array_filter($this->routes, function($element) {
+           return strpos($element->getPath(), ':') === false;
+        });
+
+        $dynamicRoutes = array_filter($this->routes, function($element) {
+            return strpos($element->getPath(), ':') !== false;
+        });
+
+        return array_merge($staticRoutes, $dynamicRoutes);
     }
 
     private function checkPendingRoute() {

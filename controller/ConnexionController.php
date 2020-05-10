@@ -1,6 +1,8 @@
 <?php
 
 use Framework\Configuration;
+use Framework\Controller\Controller;
+use Framework\Http\Request;
 use Framework\View;
 
 class ConnexionController extends Controller {
@@ -15,14 +17,14 @@ class ConnexionController extends Controller {
         $this->indexLocation = Configuration::get("index");
     }
 
-    public function login(array $request) { 
+    public function login(Request $request) {
         $this->denyAccessUnlessGranted('ANONYMOUS');
 
-        $post = $request['POST'];
+        $post = $request->request();
 
         if(!empty($post)) {
-            $userName = $post['username'];
-            $password = $post['password'];
+            $userName = $post->get('username');
+            $password = $post->get('password');
 
             if($userName != null && $password != null) {
                 if(strlen($userName) > 0 && strlen($password) > 0) {
