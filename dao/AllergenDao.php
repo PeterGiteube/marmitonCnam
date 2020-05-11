@@ -32,10 +32,16 @@ class AllergenDao extends Dao {
         $sth = $this->executeRequest($sql,['id_allergene' => $id, 'nom' => $name]);
     }
 
-      public function deleteAllergenById($id) {
+    public function deleteAllergenById($id) {
         $sql = "DELETE FROM allergene WHERE id_allergene = :id_allergene";
         $sth = $this->executeRequest($sql,['id_allergene' => $id]);
     }
+
+    public function getAllergenNameByIngredientId() {
+        $sql = "SELECT allergene.nom FROM allergene INNER JOIN ingredient_allergene ON allergene.id_allergene = ingredient_allergene.id_allergene";
+        $sth = $this->executeRequest($sql);
+    }
+
 
     private function mapAllergen($queryResult) {
         $allergen = new Allergen();
