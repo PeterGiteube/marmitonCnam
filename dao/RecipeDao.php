@@ -13,6 +13,15 @@ class RecipeDao extends Dao {
         return $result;
     }
 
+    public function getValidRecipes($valid) : array {
+        $sql = "SELECT id_recette, nom, cout, temps_preparation, temps_cuisson, date_publication, valid, nb_personnes, id_utilisateur, id_categorie_recette FROM recette WHERE valid = :valid";
+        $sth = $this->executeRequest($sql,["valid" => $valid]);
+
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function getRecipeById($id) : array {
         $sql = "SELECT id_recette, nom, cout, temps_preparation, temps_cuisson, date_publication, valid, nb_personnes, id_utilisateur, id_categorie_recette FROM recette WHERE id_recette = :id_recette";
         $sth = $this->executeRequest($sql,['id_recette' => $id]);
