@@ -7,7 +7,7 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <td scope="col">id_utlisateur</td>
+                <td scope="col">id utilisateur</td>
                 <td>pseudo</td>
                 <td>nom</td>
                 <td>prenom</td>
@@ -18,20 +18,26 @@
             </tr>
             </thead>
             <tbody>
-            <?php while ($dataUser = $requestUser->fetch()) {
-                echo "<tr>
-                            <td>" . $dataUser['id_utilisateur'] . "</td>
-                            <td>" . $dataUser['pseudo'] . "</td>
-                            <td>" . $dataUser['nom'] . "</td>
-                            <td>" . $dataUser['prenom'] . "</td>
-                            <td>" . $dataUser['mail'] . "</td>
-                            <td>" . $dataUser['telephone'] . "</td>
-                            <td>" . $dataUser['ville'] . "</td>
-                            <td>" . $dataUser['role'] . "</td>
-                      <tr>";
-            } ?>
+            <?php
+            $result = array_map(function ($user) {
+                return "<tr>
+                                <td>" . $user->getId() . "</td>
+                                <td>" . $user->getPseudo() . "</td>
+                                <td>" . $user->getLastName() . "</td>
+                                <td>" . $user->getFirstName() . "</td>
+                                <td>" . $user->getEmail() . "</td>
+                                <td>" . $user->getPhoneNumber() . "</td>
+                                <td>" . $user->getCity() . "</td>
+                                <td>" . $user->getRole() . "</td>
+                            <tr>";
+            }, $requestUser);
+
+
+            for ($i = 0; $i < count($requestUser); $i++) {
+                echo $result[$i];
+            }
+            ?>
             </tbody>
         </table>
     </div>
-</div>
 </div>
