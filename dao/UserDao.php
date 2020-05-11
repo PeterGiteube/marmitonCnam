@@ -31,15 +31,15 @@ class UserDao extends Dao {
         return $this->mapUser($result);
     }
 
-    public function insertUser($pseudo, $password, $nom, $prenom, $mail, $ville) {
+    public function insertUser($pseudo, $password, $lastName, $firstName, $mail, $city) {
         $sql = "INSERT INTO utilisateur (pseudo, mot_de_passe, nom, prenom, mail, ville) VALUES (pseudo = :pseudo, mot_de_passe = :mot_de_passe, nom = :nom, prenom = :prenom, mail = :mail, ville = :ville";
-        $sth = $this->executeRequest($sql, ["pseudo" => $pseudo, "mot_de_passe" => $password, "nom" => $nom, "prenom" => $prenom, "mail" => $mail, "ville" => $ville]);
+        $sth = $this->executeRequest($sql, ["pseudo" => $pseudo, "mot_de_passe" => $password, "nom" => $lastName, "prenom" => $firstName, "mail" => $mail, "ville" => $city]);
     }
 
-    public function updateUserInfosById($id, $pseudo, $prenom, $nom, $ville) {
+    public function updateUserInfosById($id, $pseudo, $firstName, $lastName, $city) {
         $sql = "UPDATE utilisateur SET pseudo = :pseudo, prenom = :prenom, nom = :nom, ville = :ville WHERE id_utilisateur = :id";
 
-        $this->executeRequest($sql, ["id" => $id, "pseudo" => $pseudo, "prenom" => $prenom, "nom" => $nom, "ville" => $ville]);
+        $this->executeRequest($sql, ["id" => $id, "pseudo" => $pseudo, "prenom" => $firstName, "nom" => $lastName, "ville" => $city]);
     }
 
     public function updateUserCredentialsById($id, $mail, $password) {
