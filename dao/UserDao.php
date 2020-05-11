@@ -44,15 +44,12 @@ class UserDao extends Dao {
 
     public function updateUserCredentialsById($id, $mail, $password) {
         $sql = "UPDATE utilisateur SET mail = :mail, mot_de_passe = :mot_de_passe WHERE id_utilisateur = :id";
-
         $this->executeRequest($sql, ["id" => $id, "mail" => $mail, "mot_de_passe" => $password]);
     }
 
     public function updateUserRoleById($id, $role) {
         $sql = "UPDATE utilisateur_role SET role = :role WHERE id_utilisateur = :id";
-
         $this->executeRequest($sql, ["id" => $id, "role" => $role]);
-
     }
 
     public function deleteUserById($id)
