@@ -7,9 +7,26 @@ use Framework\Dictionary;
 class RequestImp implements Request {
 
     private $method;
+
+    /**
+     * POST body parameters
+     *
+     * @var Dictionary
+     */
     private $request;
+
+    /**
+     * GET string parameters
+     *
+     * @var Dictionary
+     */
     private $query;
 
+    /**
+     * Route arguments for dynamic route parameters. Empty if the route is static.
+     *
+     * @var Dictionary
+     */
     private $routeArguments;
 
     private $body;

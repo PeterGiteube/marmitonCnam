@@ -22,7 +22,7 @@ class ConnexionController extends Controller {
 
         $post = $request->request();
 
-        if(!empty($post)) {
+        if($post->count() > 0) {
             $userName = $post->get('username');
             $password = $post->get('password');
 
@@ -51,7 +51,6 @@ class ConnexionController extends Controller {
 
         if($user) {
             $_SESSION['user'] = $user;
-
             $this->redirect($this->indexLocation);
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");

@@ -13,11 +13,15 @@ class UserDao extends Dao {
         return $result;
     }
 
-    public function getUserByCredentials($userName, $password) : User {
+    public function getUserByCredentials($userName, $password) {
         $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville, role FROM utilisateur WHERE pseudo = :pseudo AND mot_de_passe = :mot_de_passe";
         $sth = $this->executeRequest($sql, ["pseudo" => $userName, "mot_de_passe" => $password]);
 
         $result = $sth->fetch(PDO::FETCH_ASSOC);
+
+        if(!$result) {
+            return null;
+        }
 
         return $this->mapUser($result);
     }
@@ -52,7 +56,6 @@ class UserDao extends Dao {
         $sql = "UPDATE utilisateur_role SET role = :role WHERE id_utilisateur = :id";
 
         $this->executeRequest($sql, ["id" => $id, "role" => $role]);
-
     }
 
     public function deleteUserById($id)

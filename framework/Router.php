@@ -19,40 +19,57 @@ class Router {
         $this->startSession();
         
         $view = new View('404', []);
-        $authorizationChecker = new RoleChecker();
+        $roleChecker = new RoleChecker();
 
         $queryUrl = $request->url();
-        $matchingRoute = null;
 
-        foreach ($this->routes as $route) {
-            $urlPattern = $route->getPath();
-            $matcher = new UrlMatcher($urlPattern);
+        $matchingRoute = $this->getMatchingRoute($queryUrl);
 
-            if($matcher->match($queryUrl)) {
-                $arguments = $matcher->extract($queryUrl);
+        if($matchingRoute != null) {
+
+            $requestMethod = $request->method();
+
+            if ($this->requestMethodValid($requestMethod, $matchingRoute)) {
+
+                $arguments = $this->getRouteArguments($matchingRoute, $queryUrl);
                 $request->setRouteArguments($arguments);
 
-                $matchingRoute = $route;
-                break;
-            }
-        }
-
-        if($matchingRoute == null) {
-            http_response_code(404);
-        } else {
-            if ($this->requestMethodValid($request->method(), $matchingRoute)) {
                 $invoker = new ControllerInvoker($matchingRoute->getController());
-                $invoker->prepareRoleCheckerInjection($authorizationChecker);
+                $invoker->prepareRoleCheckerInjection($roleChecker);
 
                 $view = $invoker->invoke($request);
 
             } else {
                 http_response_code(404);
             }
+        } else {
+            http_response_code(404);
         }
 
-        $view->setRoleChecker($authorizationChecker);
+        $view->setRoleChecker($roleChecker);
         $view->render();
+    }
+
+    private function getMatchingRoute($queryUrl) {
+        foreach ($this->routes as $route) {
+            $matcher = $this->getMatcherForCurrentRoute($route);
+
+            if($matcher->match($queryUrl))
+                return $route;
+        }
+
+        return null;
+    }
+
+    private function getRouteArguments($matchingRoute, $queryUrl) {
+        $matcher = $this->getMatcherForCurrentRoute($matchingRoute);
+
+        return $matcher->extract($queryUrl);
+    }
+
+    private function getMatcherForCurrentRoute($route) {
+        $urlPattern = $route->getPath();
+        return new UrlMatcher($urlPattern);
     }
 
     private function requestMethodValid($requestMethod, $route) {
