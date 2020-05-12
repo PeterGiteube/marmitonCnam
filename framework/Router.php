@@ -2,6 +2,10 @@
 
 namespace Framework;
 
+use Framework\Controller\ControllerInvoker;
+use Framework\Http\RequestImp;
+use Framework\Routing\UrlMatcher;
+
 class Router {
 
     private $routes;
@@ -11,30 +15,30 @@ class Router {
         $this->routes = $routes;
     }
 
-    public function request() {
+    public function handle(RequestImp $request) {
         $this->startSession();
-
-        $uri = $_SERVER['REQUEST_URI'];
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-
+        
         $view = new View('404', []);
+        $roleChecker = new RoleChecker();
 
-        $authorizationChecker = new RoleChecker();
+        $queryUrl = $request->url();
 
-        if($this->routeIsValid($uri)) {
-            $route = $this->getRoute($uri);
+        $matchingRoute = $this->getMatchingRoute($queryUrl);
 
-            $controllerInvoker = $route->getController()['controller'];
-            $controllerInstance = $route->getController()['class_instance'];
-            if(is_subclass_of($controllerInstance, 'Controller')) {
-                $controllerInstance->setRoleChecker($authorizationChecker);
-            }
+        if($matchingRoute != null) {
 
-            if($this->requestMethodValid($requestMethod, $route)) {
-                $request = $this->createRequest($uri);
+            $requestMethod = $request->method();
 
-                /** @var View $view */
-                $view = $controllerInvoker($request);
+            if ($this->requestMethodValid($requestMethod, $matchingRoute)) {
+
+                $arguments = $this->getRouteArguments($matchingRoute, $queryUrl);
+                $request->setRouteArguments($arguments);
+
+                $invoker = new ControllerInvoker($matchingRoute->getController());
+                $invoker->prepareRoleCheckerInjection($roleChecker);
+
+                $view = $invoker->invoke($request);
+
             } else {
                 http_response_code(404);
             }
@@ -42,44 +46,34 @@ class Router {
             http_response_code(404);
         }
 
-        $view->setRoleChecker($authorizationChecker);
+        $view->setRoleChecker($roleChecker);
         $view->render();
     }
 
-    private function createRequest($uri) {
-        $body = file_get_contents('php://input');
+    private function getMatchingRoute($queryUrl) {
+        foreach ($this->routes as $route) {
+            $matcher = $this->getMatcherForCurrentRoute($route);
 
-        return [
-            'POST' => $_POST,
-            'GET' => $_GET,
-            'body' => $body,
-            'uri' => $uri,
-        ];
+            if($matcher->match($queryUrl))
+                return $route;
+        }
+
+        return null;
+    }
+
+    private function getRouteArguments($matchingRoute, $queryUrl) {
+        $matcher = $this->getMatcherForCurrentRoute($matchingRoute);
+
+        return $matcher->extract($queryUrl);
+    }
+
+    private function getMatcherForCurrentRoute($route) {
+        $urlPattern = $route->getPath();
+        return new UrlMatcher($urlPattern);
     }
 
     private function requestMethodValid($requestMethod, $route) {
         return in_array($requestMethod, $route->getMethods());
-    }
-
-    private function routeIsValid($uri) {
-        foreach ($this->routes as $route) {
-            $path = $route->getPath();
-            if($path == $uri) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function getRoute($uri) {
-        $result = array_filter($this->routes, function($element) use(&$uri) {
-            return $element->getPath() == $uri;
-        });
-
-        $values = array_values($result);
-
-        return $values[0];
     }
 
     private function startSession() {

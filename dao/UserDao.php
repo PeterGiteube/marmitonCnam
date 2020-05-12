@@ -19,11 +19,15 @@ class UserDao extends Dao {
         return $users;
     }
 
-    public function getUserByCredentials($userName, $password) : User {
+    public function getUserByCredentials($userName, $password) {
         $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville, role FROM utilisateur WHERE pseudo = :pseudo AND mot_de_passe = :mot_de_passe";
         $sth = $this->executeRequest($sql, ["pseudo" => $userName, "mot_de_passe" => $password]);
 
         $result = $sth->fetch(PDO::FETCH_ASSOC);
+
+        if(!$result) {
+            return null;
+        }
 
         return $this->mapUser($result);
     }
