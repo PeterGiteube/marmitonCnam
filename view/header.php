@@ -17,7 +17,7 @@
             <!-- Navbar right -->
             <div class="navbar-collapse collapse">
                 <ul class="navbar-nav ml-auto">
-                    <?php if(!$this->hasRole('ROLE_USER')) { ?>
+                    <?php if (!$this->hasRole('ROLE_USER')) { ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= $this->getIndex() . "/login" ?>">Connectez-vous</a>
                         </li>
@@ -26,21 +26,21 @@
                         </li>
                     <?php } else { ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= $this->getIndex()  . "/profile" ?>">Profil</a>
+                            <a class="nav-link" href="<?= $this->getIndex() . "/profile" ?>">Profil</a>
                         </li>
 
-                        <?php if($this->hasRole('ROLE_ADMIN')) { ?>
+                        <?php if ($this->hasRole('ROLE_ADMIN')) { ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->getIndex()  . "/admin" ?>">Administration</a>
+                                <a class="nav-link" href="<?= $this->getIndex() . "/admin" ?>">Administration</a>
                             </li>
                         <?php } ?>
-
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= $this->getIndex()  . "/logout" ?>">Déconnexion</a>
+                            <a class="nav-link" href="<?= $this->getIndex() . "/logout" ?>">Déconnexion</a>
                         </li>
                     <?php } ?>
                 </ul>
             </div>
+
         </div>
     </nav>
 </header>

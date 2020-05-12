@@ -64,7 +64,6 @@
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #858796;
     text-align: left;
     background-color: #fff;
   }
@@ -1364,7 +1363,7 @@
       margin-left: 91.66667%;
     }
   }
-  
+  /**
   .table {
     width: 100%;
     margin-bottom: 1rem;
@@ -1706,7 +1705,7 @@
   
   .table-responsive > .table-bordered {
     border: 0;
-  }
+  }**/
   
   .form-control {
     display: block;

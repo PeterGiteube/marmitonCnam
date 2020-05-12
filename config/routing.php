@@ -32,4 +32,16 @@ $routes->add("marmiton_administration", "/admin")
     ->controller(new AdminController(), "admin")
     ->methods(['GET']);
 
+$routes->add("marmiton_waiting_recipe", "/waitingRecipe")
+    ->controller(new WaitingRecipeController(), "waitingRecipe")
+    ->methods(['GET']);
+
+$routes->add("marmiton_validate_recipe", "/validateRecipe")
+    ->controller(new ValidateRecipeController(), "validateRecipe")
+    ->methods(['GET']);
+
+$routes->add("marmiton_manage_user", "/manageUser")
+    ->controller(new ManageUserController(), "manageUser")
+    ->methods(['GET']);
+
 return $routes->build();

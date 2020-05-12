@@ -4,13 +4,19 @@ use Framework\Dao;
 
 class UserDao extends Dao {
 
+    // j'ai changé le type qu'on return pour manageUserView
     public function getUsers() : array {
-        $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville FROM utilisateur";
+        $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville, role FROM utilisateur";
         $sth = $this->executeRequest($sql);
 
-        $result = $sth->fetch(PDO::FETCH_ASSOC);
+        $users = array();
+        $i = 0;
+        while($result = $sth->fetch(PDO::FETCH_ASSOC)) {
+            $users[$i] = $this->mapUser($result);
+            $i++;
+        }
 
-        return $result;
+        return $users;
     }
 
     public function getUserByCredentials($userName, $password) : User {
