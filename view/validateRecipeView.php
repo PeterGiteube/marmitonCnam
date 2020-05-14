@@ -18,23 +18,9 @@
             </thead>
             <tbody>
             <?php
-            /*$result = array_map(function ($recipe) {
-                return "<tr>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                                <td>" . $recipe . "</td>
-                            <tr>";
-            }, $requestRecipe);
-
-
-            for ($i = 0; $i < count($requestUser); $i++) {
-                echo $result[$i];
-            }*/
+            for ($i = 0; $i < count($recipes); $i++) {
+                echo $recipes[$i];
+            }
             ?>
             </tbody>
         </table>
