@@ -30,15 +30,15 @@
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="<?= $this->getIndex() . "/waitingRecipe" ?>">En attente</a>
-                    <a class="collapse-item" href="<?= $this->getIndex() . "/validateRecipe" ?>">Validées</a>
+                    <a class="collapse-item" href="<?= $this->getIndex() . "/admin/recipes/waiting" ?>">En attente</a>
+                    <a class="collapse-item" href="<?= $this->getIndex() . "/admin/recipes/validate" ?>">Validées</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Charts -->
         <li class="nav-item">
-            <a class="nav-link" href="<?= $this->getIndex() . "/manageUser" ?>">
+            <a class="nav-link" href="<?= $this->getIndex() . "/admin/users/manage" ?>">
                 <i class="fas fa-users"></i>
                 <span>Gérer les utilisateurs</span></a>
         </li>

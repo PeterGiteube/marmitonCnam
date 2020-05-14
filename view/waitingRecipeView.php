@@ -7,18 +7,18 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <td scope="col">id_recette</td>
-                <td>nom</td>
-                <td>cout</td>
-                <td>temps préparation</td>
-                <td>temps cuisson</td>
-                <td>date publication</td>
-                <td>nombre personnes</td>
+                <td scope="col">ID</td>
+                <td>Nom</td>
+                <td>Coût</td>
+                <td>Temps de préparation</td>
+                <td>Temps de cuisson</td>
+                <td>Date de publication</td>
+                <td>Nombre de personnes</td>
             </tr>
             </thead>
             <tbody>
             <?php
-            for ($i = 0; $i < count($); $i++) {
+            for ($i = 0; $i < count($recipes); $i++) {
                 echo $recipes[$i];
             }
             ?>
