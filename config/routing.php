@@ -42,7 +42,7 @@ $routes->add("marmiton_validate_recipe", "/admin/recipes/validate")
     ->methods(['GET']);
 
 $routes->add("marmiton_manage_user", "/admin/users/manage")
-    ->controller(new ManageUserController(), "manageUser")
+    ->controller(new ManageUserController(), "manage")
     ->methods(['GET']);
 
 return $routes->build();
