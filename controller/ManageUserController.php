@@ -11,25 +11,27 @@ class ManageUserController extends Controller {
         $this->userDao = new UserDao();
     }
     
-    public function manageUser() {
+    public function manage() {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
-        $result = array_map($this->formatHTMLUser, $this->userDao->getUsers());
+        $users = $this->userDao->getUsers();
+        $result = array_map($this->formatHTMLUser(), $users);
 
         return new View("manageUser", ["users" => $result]);
     }
 
-    private function formatHTMLUser($user) {
-        return
-        "<tr>
-            <td>" . $user->getId() . "</td>
-            <td>" . $user->getPseudo() . "</td>
-            <td>" . $user->getLastName() . "</td>
-            <td>" . $user->getFirstName() . "</td>
-            <td>" . $user->getEmail() . "</td>
-            <td>" . $user->getPhoneNumber() . "</td>
-            <td>" . $user->getCity() . "</td>
-            <td>" . $user->getRole() . "</td>
-        <tr>";
+    private function formatHTMLUser() {
+        return function($user) {
+            return "<tr>
+                <td>" . $user->getId() . "</td>
+                <td>" . $user->getPseudo() . "</td>
+                <td>" . $user->getLastName() . "</td>
+                <td>" . $user->getFirstName() . "</td>
+                <td>" . $user->getEmail() . "</td>
+                <td>" . $user->getPhoneNumber() . "</td>
+                <td>" . $user->getCity() . "</td>
+                <td>" . $user->getRole() . "</td>
+            <tr>";
+        };
     }
 }
