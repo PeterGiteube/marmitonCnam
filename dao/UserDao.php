@@ -9,11 +9,10 @@ class UserDao extends Dao {
         $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville, role FROM utilisateur";
         $sth = $this->executeRequest($sql);
 
-        $users = array();
-        $i = 0;
+        $users = [];
+
         while($result = $sth->fetch(PDO::FETCH_ASSOC)) {
-            $users[$i] = $this->mapUser($result);
-            $i++;
+            $users[] = $this->mapUser($result);
         }
 
         return $users;
