@@ -7,21 +7,20 @@
         <table class="table table-bordered">
             <thead>
             <tr>
-                <td scope="col">ID</td>
-                <td>Nom</td>
-                <td>Coût</td>
-                <td>Temps de préparation</td>
-                <td>Temps de cuisson</td>
-                <td>Date de publication</td>
-                <td>Nombre de personnes</td>
+                <th scope="col">ID</th>
+                <th>Nom</th>
+                <th>Coût</th>
+                <th>Temps de préparation</th>
+                <th>Temps de cuisson</th>
+                <th>Date de publication</th>
+                <th>Nombre de personnes</th>
             </tr>
             </thead>
             <tbody>
             <?php
-            for ($i = 0; $i < count($recipes); $i++) {
-                echo $recipes[$i];
-            }
-            ?>
+            foreach($recipes as $recipe) {
+                echo $recipe;
+            } ?>
             </tbody>
         </table>
     </div>
