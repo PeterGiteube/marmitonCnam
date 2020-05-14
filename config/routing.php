@@ -11,6 +11,7 @@ $routes->add("marmiton_home", "/")
     ->methods(['GET']);
 
 $connexionController = new ConnexionController();
+$recipeController = new RecipeController();
 
 $routes->add("marmiton_login", "/login")
     ->controller($connexionController, "login")
@@ -32,15 +33,15 @@ $routes->add("marmiton_administration", "/admin")
     ->controller(new AdminController(), "admin")
     ->methods(['GET']);
 
-$routes->add("marmiton_waiting_recipe", "/waitingRecipe")
-    ->controller(new WaitingRecipeController(), "waitingRecipe")
+$routes->add("marmiton_waiting_recipe", "/admin/recipes/waiting")
+    ->controller($recipeController, "waiting")
     ->methods(['GET']);
 
-$routes->add("marmiton_validate_recipe", "/validateRecipe")
-    ->controller(new ValidateRecipeController(), "validateRecipe")
+$routes->add("marmiton_validate_recipe", "/admin/recipes/validate")
+    ->controller($recipeController, "validate")
     ->methods(['GET']);
 
-$routes->add("marmiton_manage_user", "/manageUser")
+$routes->add("marmiton_manage_user", "/admin/users/manage")
     ->controller(new ManageUserController(), "manageUser")
     ->methods(['GET']);
 
