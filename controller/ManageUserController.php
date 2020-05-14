@@ -22,7 +22,8 @@ class ManageUserController extends Controller {
 
     private function formatHTMLUser() {
         return function($user) {
-            return "<tr>
+            return "
+            <tr>
                 <td>" . $user->getId() . "</td>
                 <td>" . $user->getPseudo() . "</td>
                 <td>" . $user->getLastName() . "</td>
@@ -31,7 +32,8 @@ class ManageUserController extends Controller {
                 <td>" . $user->getPhoneNumber() . "</td>
                 <td>" . $user->getCity() . "</td>
                 <td>" . $user->getRole() . "</td>
-            <tr>";
+            </tr>
+            ";
         };
     }
 }
