@@ -1,7 +1,7 @@
 <?php
 
 use Framework\Controller\Controller;
-use Framework\View;
+use Framework\Http\Response;
 
 class ProfileController extends Controller
 {
@@ -12,6 +12,6 @@ class ProfileController extends Controller
 
         $user = $_SESSION['user'];
 
-        return new View("profile", ['user' => $user]);
+        return Response::view("profile", ['user' => $user]);
     }
 }

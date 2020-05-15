@@ -1,6 +1,7 @@
 <?php
 
 use Framework\Controller\Controller;
+use Framework\Http\Response;
 use Framework\View;
 
 class ManageUserController extends Controller {
@@ -17,7 +18,7 @@ class ManageUserController extends Controller {
         $users = $this->userDao->getUsers();
         $result = array_map($this->formatHTMLUser(), $users);
 
-        return new View("manageUser", ["users" => $result]);
+        return Response::view("manageUser", ["users" => $result]);
     }
 
     private function formatHTMLUser() {

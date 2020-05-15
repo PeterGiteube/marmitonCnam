@@ -1,13 +1,13 @@
 <?php
 
 use Framework\Controller\Controller;
-use Framework\View;
+use Framework\Http\Response;
 
 class RegistrationController extends Controller {
 
     public function registration() {
         $this->denyAccessUnlessGranted('ANONYMOUS');
 
-        return new View('registration', []);
+        return Response::view('registration');
     }
 }

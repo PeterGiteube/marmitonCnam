@@ -3,6 +3,7 @@
 use Framework\Configuration;
 use Framework\Controller\Controller;
 use Framework\Http\Request;
+use Framework\Http\Response;
 use Framework\View;
 
 class ConnexionController extends Controller {
@@ -35,7 +36,8 @@ class ConnexionController extends Controller {
             }
         }
 
-        return new View("connexion", ["error" => $this->handleError()]);
+
+        return Response::view("connexion", ["error" => $this->handleError()]);
     }
 
     public function logout() {

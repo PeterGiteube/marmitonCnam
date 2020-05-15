@@ -1,15 +1,13 @@
 <?php
 
 use Framework\Controller\Controller;
-use Framework\View;
+use Framework\Http\Response;
 
 class AdminController extends Controller {
 
     public function admin() {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
-        $user = $_SESSION['user'];
-
-        return new View("admin", []);
+        return Response::view('admin');
     }
 }

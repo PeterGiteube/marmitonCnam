@@ -1,7 +1,7 @@
 <?php
 
 use Framework\Controller\Controller;
-use Framework\View;
+use Framework\Http\Response;
 
 class RecipeController extends Controller {
 
@@ -14,11 +14,10 @@ class RecipeController extends Controller {
     public function validate() {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
-
         $validRecipes = $this->recipeDao->getValidRecipes();
         $result = array_map($this->formatHTMLRecipe(), $validRecipes);
 
-        return new View("validateRecipe", ["recipes" => $result]);
+        return Response::view("validateRecipe", ["recipes" => $result]);
     }
 
     public function waiting() {
@@ -27,7 +26,7 @@ class RecipeController extends Controller {
         $waitingRecipes = $this->recipeDao->getWaitingRecipes();
         $result = array_map($this->formatHTMLRecipe(), $waitingRecipes);
 
-        return new View("waitingRecipe", ["recipes" => $result]);
+        return Response::view("waitingRecipe", ["recipes" => $result]);
     }
 
     private function formatHTMLRecipe() {

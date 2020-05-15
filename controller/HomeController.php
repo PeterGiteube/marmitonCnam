@@ -1,10 +1,10 @@
 <?php
 
-use Framework\View;
+use Framework\Http\Response;
 
 class HomeController {
 
     public function home() {
-        return new View("home", []);
+        return Response::view('home');
     }
 }
