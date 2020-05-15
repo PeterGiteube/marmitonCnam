@@ -32,6 +32,7 @@ class ControllerInvoker {
             return $this->invokeMethod($controller, $request);
         }
 
+        throw new \Exception('Invalid controller type');
     }
 
     private function invokeClosure($controller, $request) {

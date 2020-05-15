@@ -4,12 +4,20 @@ namespace Framework;
 
 use Framework\Controller\ControllerInvoker;
 use Framework\Http\RequestImp;
+use Framework\Routing\Route;
 use Framework\Routing\UrlMatcher;
 use Framework\Http\Response;
 
 class Router {
 
+    /**
+     * @var Route[]
+     */
     private $routes;
+
+    /**
+     * @var ControllerInvoker
+     */
     private $invoker;
 
     public function __construct($routes, $controllerInvoker)

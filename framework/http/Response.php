@@ -31,8 +31,6 @@ class Response {
     }
 
     public static function json($data = []) {
-        $response = new Response();
-
         $encodedJson = json_encode($data);
 
         return new Response($encodedJson, ['Content-type' => 'application/json']);
