@@ -3,11 +3,13 @@
 use Framework\Helper\ViewHelperContainer;
 use Framework\Http\RequestImp;
 use Framework\Router;
+use Framework\Routing\RoutesBuilder;
 
 require_once "config/autoloader.php";
 
 try {
-    $routes = include 'config/routing.php';
+    $wrapper = include "config/routing.php";
+    $routes = loadRoutes($wrapper);
 
     $roleChecker = new \Framework\RoleChecker();
 
@@ -28,4 +30,14 @@ try {
     echo $ex->getMessage();
 }
 
+function loadRoutes($wrapperClosure) {
+    $routeBuilder = new RoutesBuilder();
+
+    $wrapperClosure($routeBuilder);
+
+    return $routeBuilder->build();
+}
+
 ?>
+
+

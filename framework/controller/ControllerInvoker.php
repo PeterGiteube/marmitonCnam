@@ -21,16 +21,35 @@ class ControllerInvoker {
     }
 
     public function invoke($request) : Response {
-        $controllerInstance = $this->controller['class_instance'];
-        $controllerMethodName = $this->controller['controller'];
+        $type = $this->controller['_type'];
+        $controller =  $this->controller['_controller'];
 
-        $this->injectRoleChecker($controllerInstance);
+        if($type == 'closure') {
+            return $this->invokeClosure($controller, $request);
+        }
+
+        if($type == 'method') {
+            return $this->invokeMethod($controller, $request);
+        }
+
+    }
+
+    private function invokeClosure($controller, $request) {
+        return $controller($request);
+    }
+
+    private function invokeMethod($controller, $request) {
+        $className = $controller['_class_name'];
+        $methodName = $controller['_method_name'];
 
         try {
-            $class = new ReflectionClass(get_class($controllerInstance));
-            $reflectionMethod = $class->getMethod($controllerMethodName);
+            $reflectionClass = new ReflectionClass($className);
+            $instance = $reflectionClass->newInstance();
+            $reflectionMethod = $reflectionClass->getMethod($methodName);
 
-            return $reflectionMethod->invoke($controllerInstance, $request);
+            $this->injectRoleChecker($instance);
+
+            return $reflectionMethod->invoke($instance, $request);
 
         } catch (ReflectionException $ex) {
             throw $ex;

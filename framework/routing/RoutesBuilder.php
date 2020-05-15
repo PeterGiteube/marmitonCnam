@@ -51,12 +51,13 @@ class RoutesBuilder {
         return $this;
     }
 
-    public function controller($controllerInstance, $methodName) {
-        if($controllerInstance == null) {
-            throw new Exception("Controller can't be null");
+    public function controller($controller) {
+        if($controller instanceof \Closure) {
+            $this->addClosureController($controller);
+        } else {
+            $this->addMethodController($controller);
         }
 
-        $this->pendingRoute->setController(['class_instance' => $controllerInstance, "controller" => $methodName]);
         return $this;
     }
 
@@ -86,6 +87,34 @@ class RoutesBuilder {
                 return;
             }
         }
+    }
+
+    private function addClosureController($controller) {
+        $this->pendingRoute->setController([
+            '_type' => 'closure',
+            '_controller' => $controller
+        ]);
+    }
+
+    private function addMethodController($controller) {
+        if(count($controller) > 2 || count($controller) < 1) {
+            throw new Exception("Invalid controller");
+        }
+
+        $className = $controller[0];
+        $methodName = $controller[1] ?: 'index';
+
+        if($className == "") {
+            throw new Exception("Controller can't be null or empty");
+        }
+
+        $this->pendingRoute->setController([
+            '_type' => 'method',
+            '_controller' => [
+                '_class_name' => $className,
+                '_method_name' => $methodName
+            ]
+        ]);
     }
 
 }
