@@ -5,24 +5,26 @@ namespace Framework;
 use Framework\Controller\ControllerInvoker;
 use Framework\Http\RequestImp;
 use Framework\Routing\UrlMatcher;
+use Framework\Http\Response;
 
 class Router {
 
     private $routes;
+    private $invoker;
 
-    public function __construct($routes)
+    public function __construct($routes, $controllerInvoker)
     {
         $this->routes = $routes;
+        $this->invoker = $controllerInvoker;
     }
 
     public function handle(RequestImp $request) {
         $this->startSession();
-        
-        $view = new View('404', []);
-        $roleChecker = new RoleChecker();
+
+        $response = Response::view('404', []);
+        $response->setStatusCode(Response::HTTP_NOT_FOUND);
 
         $queryUrl = $request->url();
-
         $matchingRoute = $this->getMatchingRoute($queryUrl);
 
         if($matchingRoute != null) {
@@ -34,20 +36,13 @@ class Router {
                 $arguments = $this->getRouteArguments($matchingRoute, $queryUrl);
                 $request->setRouteArguments($arguments);
 
-                $invoker = new ControllerInvoker($matchingRoute->getController());
-                $invoker->prepareRoleCheckerInjection($roleChecker);
+                $this->invoker->prepare($matchingRoute->getController());
+                $response = $this->invoker->invoke($request);
 
-                $view = $invoker->invoke($request);
-
-            } else {
-                http_response_code(404);
             }
-        } else {
-            http_response_code(404);
         }
 
-        $view->setRoleChecker($roleChecker);
-        $view->render();
+        $response->send();
     }
 
     private function getMatchingRoute($queryUrl) {

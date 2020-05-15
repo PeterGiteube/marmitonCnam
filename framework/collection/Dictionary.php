@@ -3,9 +3,10 @@
 namespace Framework;
 
 use Countable;
+use IteratorAggregate;
 
-class Dictionary implements Countable {
-
+class Dictionary implements Countable, IteratorAggregate
+{
     private $parameters;
 
     public function __construct($parameters) {
@@ -42,6 +43,11 @@ class Dictionary implements Countable {
 
     public function count() {
         return count($this->parameters);
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->parameters);
     }
 }
 

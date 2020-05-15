@@ -18,9 +18,15 @@ require_once __DIR__ . '/../framework/collection/Dictionary.php';
 
 require_once __DIR__ . '/../framework/http/Request.php';
 require_once __DIR__ . '/../framework/http/RequestImp.php';
+require_once __DIR__ . '/../framework/http/Response.php';
 
 require_once __DIR__ . '/../framework/routing/UrlParser.php';
 require_once __DIR__ . '/../framework/routing/UrlMatcher.php';
+
+require_once __DIR__ . '/../framework/helper/ViewHelperInterface.php';
+require_once __DIR__ . '/../framework/helper/ViewHelperContainer.php';
+require_once __DIR__ . '/../framework/helper/RoutePathHelper.php';
+require_once __DIR__ . '/../framework/helper/RoleCheckHelper.php';
 
 // Controllers
 require_once __DIR__ . '/../controller/ConnexionController.php';

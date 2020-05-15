@@ -3,31 +3,40 @@
 namespace Framework;
 
 use Exception;
+use Framework\Helper\RoleCheckHelper;
+use Framework\Helper\RoutePathHelper;
+use Framework\Helper\ViewHelperInterface;
+use http\Exception\InvalidArgumentException;
 
 class View
 {
-
     private $file;
     private $title;
     private $data;
+    private $statusCode;
 
     /**
-     * @var RoleChecker
+     * @var ViewHelperInterface[];
      */
-    private $roleChecker;
+    private $helpers;
 
     public function __construct($action, $data)
     {
         $this->file = "view/" . $action . "View.php";
         $this->data = $data;
+        $this->statusCode = 200;
     }
 
-    public function setRoleChecker(RoleChecker $roleChecker)
-    {
-        $this->roleChecker = $roleChecker;
+    public function setHelpers($helpers) {
+        $this->helpers = $helpers;
     }
 
-    public function render()
+    public function render() {
+        return $this->composeAndRender();
+    }
+
+
+    private function composeAndRender()
     {
         $content = $this->renderFile($this->file, $this->data);
 
@@ -39,7 +48,7 @@ class View
 
         $viewContent = $this->renderFile($template, $templateData);
 
-        echo $viewContent;
+        return $viewContent;
     }
 
     private function renderFile($file, $data)
@@ -57,14 +66,31 @@ class View
         }
     }
 
-    private function hasRole($role)
-    {
-        return $this->roleChecker->hasRole($role);
-    }
-
     public function getIndex()
     {
         return Configuration::get('index');
+    }
+
+    /**
+     * Magic method used for helper functions.
+     *
+     * @param $name
+     * @param $args
+     * @return mixed
+     * @throws Exception
+     */
+    public function __call($name, $args) {
+        $helpers = $this->helpers ?: [];
+
+        foreach ($helpers as $helper) {
+            $helperFunctionName = $helper->getName();
+
+            if($name == $helperFunctionName) {
+                return call_user_func_array($helper->getHelper(), $args);
+            }
+        }
+
+        throw new Exception("Helper function doesn't exist");
     }
 }
 
