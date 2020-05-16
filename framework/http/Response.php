@@ -2,7 +2,7 @@
 
 namespace Framework\Http;
 
-use Framework\Dictionary;
+use Framework\Collection\Dictionary;
 use Framework\Helper\ViewHelperContainer;
 use Framework\View;
 use http\Exception\InvalidArgumentException;

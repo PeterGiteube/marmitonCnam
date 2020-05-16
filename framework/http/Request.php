@@ -2,7 +2,7 @@
 
 namespace Framework\Http;
 
-use Framework\Dictionary;
+use Framework\Collection\Dictionary;
 
 interface Request {
 

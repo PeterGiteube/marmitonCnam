@@ -2,7 +2,7 @@
 
 namespace Framework\Routing;
 
-use Framework\Dictionary;
+use Framework\Collection\Dictionary;
 
 class UrlMatcher {
 
