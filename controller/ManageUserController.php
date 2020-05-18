@@ -1,18 +1,22 @@
 <?php
 
+use Framework\Configuration;
 use Framework\Controller\Controller;
 use Framework\Http\Response;
 use Framework\View;
 
-class ManageUserController extends Controller {
+class ManageUserController extends Controller
+{
 
     private $userDao;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->userDao = new UserDao();
     }
-    
-    public function manage() {
+
+    public function manage()
+    {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
 
         $users = $this->userDao->getUsers();
@@ -21,8 +25,9 @@ class ManageUserController extends Controller {
         return Response::view("manageUser", ["users" => $result]);
     }
 
-    private function formatHTMLUser() {
-        return function($user) {
+    private function formatHTMLUser()
+    {
+        return function ($user) {
             return "
             <tr>
                 <td>" . $user->getId() . "</td>
@@ -33,6 +38,7 @@ class ManageUserController extends Controller {
                 <td>" . $user->getPhoneNumber() . "</td>
                 <td>" . $user->getCity() . "</td>
                 <td>" . $user->getRole() . "</td>
+                <td><a class='btn btn-secondary' href='".Configuration::get('index')."/admin/user/".$user->getId()."/edit' role='button'>Edit</a> <button data-id='".$user->getId()."'id='delete-user' class='btn btn-danger' type='button' data-toggle='modal' data-target='#delete-user-modal'>Supprimer</button></td>
             </tr>
             ";
         };

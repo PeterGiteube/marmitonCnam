@@ -1,6 +1,5 @@
 <?php
 
-
 class Recipe  {
     private $id;
     private $name;

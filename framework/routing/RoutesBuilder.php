@@ -63,7 +63,7 @@ class RoutesBuilder {
 
     public function build() {
         $staticRoutes = array_filter($this->routes, function($element) {
-           return strpos($element->getPath(), ':') === false;
+            return strpos($element->getPath(), ':') === false;
         });
 
         $dynamicRoutes = array_filter($this->routes, function($element) {

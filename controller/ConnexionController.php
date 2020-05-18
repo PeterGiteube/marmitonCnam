@@ -11,7 +11,7 @@ class ConnexionController extends Controller {
     private $userDAO;
     private $error;
     private $indexLocation;
-    
+
     public function __construct() {
         $this->userDAO = new UserDao();
         $this->error = "";

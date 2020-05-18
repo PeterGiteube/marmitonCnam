@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="<?= $this->getIndex() . '/public/css/fontawesome/all.css' ?>">
     <link rel="stylesheet" href="<?= $this->getIndex() . '/public/css/sb-admin/sb-admin.css' ?>">
     <link rel="stylesheet" href="<?= $this->getIndex() . '/public/css/dataTables/dataTables.min.css' ?>">
- 
     <title><?= $title ?></title>
 </head>
 <body>
@@ -24,5 +23,6 @@
 <script src="<?= $this->getIndex() . '/public/js/sb-admin/sb-admin.js' ?>"></script>
 <script src="<?= $this->getIndex() . '/public/js/bootstrap/bootstrap.js' ?>"></script>
 <script src="<?= $this->getIndex() . '/public/js/dataTables/dataTables.js' ?>"></script>
+<script src="<?= $this->getIndex() . '/public/js/dataTables/dataTables.bootstrap4.min.js' ?>"></script>
 <script src="<?= $this->getIndex() . '/public/js/script.js' ?>"></script>
 </html>
