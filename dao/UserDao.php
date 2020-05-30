@@ -6,7 +6,7 @@ class UserDao extends Dao {
 
     // j'ai changé le type qu'on return pour manageUserView
     public function getUsers() : array {
-        $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville, role FROM utilisateur";
+        $sql = "SELECT id_utilisateur, pseudo, mot_de_passe, nom, prenom, mail, telephone, ville, role FROM utilisateur";
         $sth = $this->executeRequest($sql);
 
         $users = [];
@@ -19,7 +19,7 @@ class UserDao extends Dao {
     }
 
     public function getUserByCredentials($userName, $password) {
-        $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville, role FROM utilisateur WHERE pseudo = :pseudo AND mot_de_passe = :mot_de_passe";
+        $sql = "SELECT id_utilisateur, pseudo, mot_de_passe, nom, prenom, mail, telephone, ville, role FROM utilisateur WHERE pseudo = :pseudo AND mot_de_passe = :mot_de_passe";
         $sth = $this->executeRequest($sql, ["pseudo" => $userName, "mot_de_passe" => $password]);
 
         $result = $sth->fetch(PDO::FETCH_ASSOC);
@@ -32,7 +32,7 @@ class UserDao extends Dao {
     }
 
     public function getUserById($id) : User {
-        $sql = "SELECT id_utilisateur, pseudo, nom, prenom, mail, telephone, ville FROM utilisateur WHERE id_utilisateur = :id";
+        $sql = "SELECT id_utilisateur, pseudo, mot_de_passe, nom, prenom, mail, telephone, ville, role FROM utilisateur WHERE id_utilisateur = :id";
         $sth = $this->executeRequest($sql, ["id" => $id]);
 
         $result = $sth->fetch(PDO::FETCH_ASSOC);
@@ -40,15 +40,21 @@ class UserDao extends Dao {
         return $this->mapUser($result);
     }
 
-    public function insertUser($pseudo, $password, $lastName, $firstName, $mail, $city) {
-        $sql = "INSERT INTO utilisateur (pseudo, mot_de_passe, nom, prenom, mail, ville) VALUES (pseudo = :pseudo, mot_de_passe = :mot_de_passe, nom = :nom, prenom = :prenom, mail = :mail, ville = :ville";
-        $sth = $this->executeRequest($sql, ["pseudo" => $pseudo, "mot_de_passe" => $password, "nom" => $lastName, "prenom" => $firstName, "mail" => $mail, "ville" => $city]);
+    public function insertUser($pseudo, $password, $lastName, $firstName, $mail, $phoneNumber, $city, $role) {  
+        $sql = "INSERT INTO utilisateur (pseudo, mot_de_passe, nom, prenom, mail, telephone, ville, role) 
+            VALUES (:pseudo, :mot_de_passe, :nom, :prenom, :mail, :telephone, :ville, :role)";
+
+        try {
+            $this->executeRequest($sql, ["pseudo" => $pseudo, "mot_de_passe" => $password, "nom" => $lastName, "prenom" => $firstName, "mail" => $mail, "telephone" => $phoneNumber, "ville" => $city, "role" => $role]);
+        }
+        catch(Exception $e) {
+            throw new Exception('insert user failed');
+        }
     }
 
-    public function updateUserInfosById($id, $pseudo, $firstName, $lastName, $city) {
-        $sql = "UPDATE utilisateur SET pseudo = :pseudo, prenom = :prenom, nom = :nom, ville = :ville WHERE id_utilisateur = :id";
-
-        $this->executeRequest($sql, ["id" => $id, "pseudo" => $pseudo, "prenom" => $firstName, "nom" => $lastName, "ville" => $city]);
+    public function updateUserInfosById($id, $pseudo, $lastName, $firstName, $mail, $phoneNumber, $city, $role) {
+        $sql = "UPDATE utilisateur SET pseudo = :pseudo, nom = :nom, prenom = :prenom, mail = :mail, telephone = :telephone, ville = :ville, role = :role WHERE id_utilisateur = :id_utilisateur";
+        $this->executeRequest($sql, ["id_utilisateur" => $id, "pseudo" => $pseudo, "nom" => $lastName, "prenom" => $firstName, "mail" => $mail, "telephone" => $phoneNumber, "ville" => $city, "role" => $role]);
     }
 
     public function updateUserCredentialsById($id, $mail, $password) {
@@ -70,6 +76,7 @@ class UserDao extends Dao {
     private function mapUser($queryResult) {
         $user = new User();
         $user->setId($queryResult['id_utilisateur']);
+        $user->setPassword($queryResult['mot_de_passe']);
         $user->setFirstName($queryResult['prenom']);
         $user->setPseudo($queryResult['pseudo']);
         $user->setLastName($queryResult['nom']);
