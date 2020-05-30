@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <h1 class="p-3 mb-2 text-dark">Tableaux des recettes validées</h1>
 
-        <table class="table table-bordered">
+        <table  class="table table-bordered table-recipe">
             <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -14,6 +14,7 @@
                 <th>Temps de cuisson</th>
                 <th>Date de publication</th>
                 <th>Nombre de personnes</th>
+                <th>Éditer</th>
             </tr>
             </thead>
             <tbody>
@@ -24,5 +25,6 @@
             ?>
             </tbody>
         </table>
+        <?php include_once "recipeModalView.php";?>
     </div>
 </div>
