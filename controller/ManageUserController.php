@@ -29,7 +29,7 @@ class ManageUserController extends Controller
     {
         return function ($user) {
             return "
-            <tr>
+            <tr id='userRow" . $user->getId() . "'>
                 <td>" . $user->getId() . "</td>
                 <td>" . $user->getPseudo() . "</td>
                 <td>" . $user->getLastName() . "</td>
