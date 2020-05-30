@@ -5,7 +5,7 @@ class Step
 {
     private $id;
     private $number;
-    private $decription;
+    private $description;
     private $recipeId;
 
     /**
@@ -43,17 +43,17 @@ class Step
     /**
      * @return mixed
      */
-    public function getDecription()
+    public function getDescription()
     {
-        return $this->decription;
+        return $this->description;
     }
 
     /**
      * @param mixed $decription
      */
-    public function setDecription($decription)
+    public function setDescription($description)
     {
-        $this->decription = $decription;
+        $this->description = $description;
     }
 
     /**
