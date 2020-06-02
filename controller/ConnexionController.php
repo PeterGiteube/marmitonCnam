@@ -36,8 +36,10 @@ class ConnexionController extends Controller {
             }
         }
 
-
-        return Response::view("connexion", ["error" => $this->handleError()]);
+         return Response::view("connexion", [
+            "message" => $this->flash('success'), 
+            "error" => $this->handleError()
+        ]);
     }
 
     public function logout() {
@@ -52,13 +54,16 @@ class ConnexionController extends Controller {
         $user = $this->userDAO->getUserByCredentials($userName,$password);
 
         if($user) {
-            $_SESSION['user'] = $user;
-            $this->redirect($this->indexLocation);
+            if($this->userDAO->userConfirmed($user->getId())) {
+                $_SESSION['user'] = $user;
+                $this->redirect($this->indexLocation);
+            }  else {
+                $this->setConnexionError("Vous devez confirmer votre compte par email");
+            } 
         } else {
             $this->setConnexionError("Utilisateur et/ou mot de passe incorrect(s)");
         }
     }
-
 
     private function setConnexionError(string $message) {
         $this->error = $message;
