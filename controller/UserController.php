@@ -10,12 +10,17 @@ class UserController extends Controller
 {
 
     private $userDao;
+    private $recipeDao;
     private $location;
     private $error;
+    private $recipeFormater;
 
     public function __construct()
     {
         $this->userDao = new UserDao();
+        $this->recipeDao = new RecipeDao();
+        $this->recipeFormater = new RecipeFormater();
+
         $this->location = Configuration::get("index") ."/admin/users/manage";
         $this->error = "";
     }
@@ -36,7 +41,7 @@ class UserController extends Controller
 
     public function add(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         $post = $request->request();
 
         if ($post->count() > 0) {
@@ -128,6 +133,18 @@ class UserController extends Controller
            $this->redirect(Configuration::get('index') . '/admin/user/' . $id . "/edit");
         }
     }
+
+    public function consultRecipesUser(Request $request) {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+        $arguments = $request->routeArguments();
+        $id = $_SESSION['user']->getId(); 
+
+        $recipes = $this->recipeDao->getRecipesByUserId($id);
+        $resultRecipe = array_map($this->recipeFormater->formatHTMLRecipes(), $recipes);
+        return Response::view("userRecipe",['recipes' => $resultRecipe]);
+    }
+
     
     private function setInsertError(string $message)
     {
