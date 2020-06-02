@@ -27,7 +27,7 @@ class UnitDao extends Dao {
 
     public function mapUnit($queryResult) {
         $unit = new Unit();
-        $unit->setIdUnit($queryResult['id_unite']);
+        $unit->setId($queryResult['id_unite']);
         $unit->setLabel($queryResult['label']);
 
         return $unit;

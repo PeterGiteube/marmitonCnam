@@ -4,6 +4,18 @@ use Framework\Dao;
 
 class UserDao extends Dao {
 
+    private $lastAddedId;
+
+    public function __construct() 
+    {
+        $this->lastAddedId = self::getPDO()->lastInsertId();
+    }
+
+    public function getLastId() 
+    {
+        return $this->lastAddedId;
+    }
+
     // j'ai changé le type qu'on return pour manageUserView
     public function getUsers() : array {
         $sql = "SELECT id_utilisateur, pseudo, mot_de_passe, nom, prenom, mail, telephone, ville, role FROM utilisateur";
@@ -46,10 +58,33 @@ class UserDao extends Dao {
 
         try {
             $this->executeRequest($sql, ["pseudo" => $pseudo, "mot_de_passe" => $password, "nom" => $lastName, "prenom" => $firstName, "mail" => $mail, "telephone" => $phoneNumber, "ville" => $city, "role" => $role]);
+            $this->lastAddedId = self::getPDO()->lastInsertId();
         }
         catch(Exception $e) {
             throw new Exception('insert user failed');
         }
+    }
+
+    public function insertUnconfirmedUser($pseudo, $password, $lastName, $firstName, $mail, $phoneNumber, $city, $role, $token) {
+
+        $this->insertUser($pseudo, $password, $lastName, $firstName, $mail, $phoneNumber, $city, $role);
+
+        $sql = "INSERT INTO non_confirme_utilisateur(id_utilisateur, token) VALUES (:id_utilisateur, :token)";
+        $sth = $this->executeRequest($sql,['id_utilisateur' => $this->lastAddedId, 'token' => $token]);
+    }
+
+    public function isConfirmationValid($userId, $token) {
+        $sql = "SELECT id_utilisateur, token FROM non_confirme_utilisateur WHERE id_utilisateur = :id_utilisateur AND token = :token";
+        $sth = $this->executeRequest($sql, ['id_utilisateur' => $userId, 'token' => $token]);
+        
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+    
+    public function deleteUnconfirmedUser($idUser) {
+        $sql = "DELETE FROM non_confirme_utilisateur WHERE id_utilisateur = :id_utilisateur";
+        $this->executeRequest($sql,['id_utilisateur' => $idUser]);
     }
 
     public function updateUserInfosById($id, $pseudo, $lastName, $firstName, $mail, $phoneNumber, $city, $role) {
@@ -68,9 +103,29 @@ class UserDao extends Dao {
     }
 
     public function deleteUserById($id)
-    {
+    {   
+        $this->deleteUnconfirmedUser($id);
+
         $sql = "DELETE FROM utilisateur WHERE id_utilisateur = :id_utilisateur";
         return $this->executeRequest($sql, ["id_utilisateur" => $id]);
+    }
+
+    public function existsByUniqueEmail($email) {
+        $sql = "SELECT mail FROM utilisateur WHERE mail = :email";
+        $sth = $this->executeRequest($sql, ['email' => $email]);
+
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
+        return $result !== false;
+    }
+
+    public function userConfirmed($id) {
+        $sql = "SELECT id_utilisateur FROM non_confirme_utilisateur WHERE id_utilisateur = :id_utilisateur";
+        $sth = $this->executeRequest($sql, ['id_utilisateur' => $id]);
+
+        $result = $sth->fetch(PDO::FETCH_ASSOC);
+
+        return $result === false;
     }
 
     private function mapUser($queryResult) {

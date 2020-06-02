@@ -53,19 +53,36 @@ class StepDao extends Dao {
         $sth = $this->executeRequest($sql,['numero' => $number, 'description' => $description, 'id_recette' => $recipeId]);
     }
 
-    public function updateStepByRecipeId($recipeId, $number, $description) {
-        
-        $stepIds = $this->getStepIdByRecipeId($recipeId);
+    public function insertIfNotExistStepByRecipeId($stepNumber, $description, $recipeId) {
 
-        $sql = "UPDATE etape SET numero = :numero, description = :description WHERE id_etape = :id_etape";
+        $sql = "INSERT INTO etape(`numero`, `description`, `id_recette`)
+                SELECT :numero, :description, :id_recette
+                WHERE 
+                NOT EXISTS ( SELECT id_recette FROM etape WHERE numero = :numero )";
+
+        $sth = $this->executeRequest($sql,["id_recette" => intval($recipeId), "numero" => intval($stepNumber), "description" => $description]);
+    }
+
+    public function updateStepByRecipeId($recipeId, $number, $description) {
+
+        $sql = "UPDATE etape SET description = :description WHERE id_recette = :id_recette AND numero = :numero";
     
-        foreach($stepIds as $stepId) {
-            try {
-                $this->executeRequest($sql,['numero' => $number, 'description' => $description, 'id_etape' => intval($stepId)]);            
-            }
-            catch (Exception $ex) {
-                throw new Exception('updateStepByRecipeId failed');
-            }
+        try {
+            $this->executeRequest($sql,['numero' => intval($number), 'description' => $description, 'id_recette' => $recipeId]);            
+        }
+        catch (Exception $ex) {
+            throw new Exception('updateStepByRecipeId failed');
+        }
+    }
+
+    public function deleteStepByStepId($id) {
+        $sql = "DELETE FROM etape WHERE id_etape = :id_etape";
+
+        try {
+            $this->executeRequest($sql, ['id_etape' => $id]);
+        }
+        catch(Exception $e) {
+            throw new Exception('delete steps failed');
         }
     }
 
@@ -80,9 +97,10 @@ class StepDao extends Dao {
         }
     }
 
+
     private function mapStep($queryResult) {
         $step = new Step();
-        $step->setId($queryResult['id_utilisateur']);
+        $step->setId($queryResult['id_etape']);
         $step->setNumber($queryResult['numero']);
         $step->setDescription($queryResult['description']);
         $step->setRecipeId($queryResult['id_recette']);
