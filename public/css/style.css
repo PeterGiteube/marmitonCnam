@@ -5,28 +5,20 @@
 
 #profileTab {
     width: 30%;
-    position: absolute;
-    left: 50%;
-    transform: translatex(-50%);
-    margin-top: 10%;
 }
 
 #div-add-ingredient {
-    display: none;
+    display : none;
 }
 
 #div-add-step {
-    display:none;
+    display : none;
 }
 
 .warningInput {
     border-color: red !important;
 }
 
-
-
-
-/**
 .navbar {
     margin-bottom: 0;
 }
@@ -56,15 +48,8 @@
     background-color: #f7f7f7;
 }
   
-.card {
-    float: left;
-    width: 33.333%;
-    padding: .75rem;
-    margin-bottom: 2rem;
-    border: 0;
-}
   
-.card > img {
+.card-album > img {
     margin-bottom: .75rem;
 }
   
@@ -73,10 +58,52 @@
 }
   
 footer {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    bottom: 0;
+    width: 100%;
+    position: inherit;
+    z-index: auto;
 }
   
 footer p {
     margin-bottom: .25rem;
-}**/
+}
+
+.img-card {
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.shadow {
+ box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.text-dark {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+.text-center {
+    position: relative;
+}
+
+#image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#title-recipe {
+    position: absolute;
+    max-width: 500px;
+    color: #eee;
+    text-shadow: black 0px 0px 11px;
+}
+
+.text-grey {
+    color: #5a5c69;
+}
+
+.backgroud-footer {
+    background-color: #e3e3e3;
+}
