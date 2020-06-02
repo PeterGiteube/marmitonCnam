@@ -44,7 +44,11 @@ class View
         $headerContent = $this->renderFile($header, []);
 
         $template = 'view/template.php';
-        $templateData = array('title' => $this->title, 'header' => $headerContent, 'content' => $content);
+        
+        $footer = 'view/footer.php';
+        $footerContent = $this->renderFile($footer, []);
+
+        $templateData = array('title' => $this->title, 'header' => $headerContent, 'content' => $content, 'footer' => $footerContent);
 
         $viewContent = $this->renderFile($template, $templateData);
 
