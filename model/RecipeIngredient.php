@@ -1,15 +1,15 @@
 <?php 
 
-class RecipeIngredient {
-    private $unitLabel;
 
+class RecipeIngredient {
     private $idRecipeIngredient;
     private $idRecipe;
     private $idIngredient;
-    private $ingredientName;
     private $quantity;
+    private $unit;
+    private $ingredient;
 
-/**
+    /**
      * @return mixed
      */
     public function getIdRecipeIngredient()
@@ -18,8 +18,8 @@ class RecipeIngredient {
     }
 
     /**
- * @param mixed $idRecipeIngredient
- */
+    * @param mixed $idRecipeIngredient
+    */
     public function setIdRecipeIngredient($idRecipeIngredient)
     {
         $this->idRecipeIngredient = $idRecipeIngredient;
@@ -73,30 +73,29 @@ class RecipeIngredient {
         $this->quantity = $quantity;
     }
 
-    public function getUnitLabel() {
-        return $this->unitLabel;
+    public function setUnit($unit) 
+    {
+        $this->unit = $unit;
     }
 
-    /**
-     * @param mixed $unitLabel
-     */
-    public function setUnitLabel($unitLabel) {
-        $this->unitLabel = $unitLabel;
+    public function getUnit() 
+    {
+        return $this->unit;
     }
 
-    /**
+    /*
     * @return mixed
     */
-   public function getIngredientName()
+   public function getIngredient()
    {
-       return $this->ingredientName;
+       return $this->ingredient;
    }
 
    /**
     * @param mixed $idRecipeIngredient
     */
-   public function setIngredientName($ingredientName)
+   public function setIngredient($ingredient)
    {
-       $this->ingredientName = $ingredientName;
+       $this->ingredient = $ingredient;
    }
 }

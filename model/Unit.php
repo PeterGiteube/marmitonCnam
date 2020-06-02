@@ -1,13 +1,13 @@
 <?php
 
 class Unit {
-    private $idUnit;
+    private $id;
     private $label;
 
     /**
      * @return mixed
      */
-    public function getIdUnit()
+    public function getId()
     {
         return $this->idUnit;
     }
@@ -15,9 +15,9 @@ class Unit {
     /**
      * @param mixed $idUnit
      */
-    public function setIdUnit($idUnit)
+    public function setId($id)
     {
-        $this->idUnit = $idUnit;
+        $this->idUnit = $id;
     }
 
     /**

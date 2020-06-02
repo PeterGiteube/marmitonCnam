@@ -9,6 +9,7 @@ class Recipe  {
     private $releaseDate;
     private $valid;
     private $headcount;
+    private $imageSource;
     private $userId;
     private $RecipeCategoryId;
 
@@ -170,6 +171,22 @@ class Recipe  {
     public function setRecipeCategoryId($RecipeCategoryId)
     {
         $this->RecipeCategoryId = $RecipeCategoryId;
+    }
+
+     /**
+     * @return mixed
+     */
+    public function getImageSource()
+    {
+        return $this->imageSource;
+    }
+
+    /**
+     * @param mixed $imageSource
+     */
+    public function setImageSource($imageSource)
+    {
+        $this->imageSource = $imageSource;
     }
 
 
