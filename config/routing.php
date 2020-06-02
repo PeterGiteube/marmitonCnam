@@ -20,6 +20,14 @@ return function(RoutesBuilder $routes) {
         ->controller([ProfileController::class, "profile"])
         ->methods(['GET']);
 
+    $routes->add("marmiton_profile_info", "/profile/info/update")
+        ->controller([ProfileController::class, "updateInfo"])
+        ->methods(['POST']);
+
+    $routes->add("marmiton_profile_security", "/profile/security/update")
+        ->controller([ProfileController::class, "updateSecurity"])
+        ->methods(['POST']);
+
     $routes->add("marmiton_registration", "/registration")
         ->controller([RegistrationController::class, "registration"])
         ->methods(['GET', 'POST']);
@@ -76,5 +84,51 @@ return function(RoutesBuilder $routes) {
         ->controller([IngredientController::class, "list"])
         ->methods(['GET']);
 
-   
+    $routes->add("marmiton_delete_ingredient", "/admin/recipe/delete/ingredient")
+        ->controller([RecipeIngredientController::class, "delete"])
+        ->methods(['GET', 'POST']);
+
+    $routes->add("marmiton_delete_step", "/admin/recipe/delete/step")
+        ->controller([StepController::class, "delete"])
+        ->methods(['GET', 'POST']);
+
+    $routes->add("marmiton_add_ingredient", "/admin/ingredients/add")
+        ->controller([IngredientController::class, "add"])
+        ->methods(['GET', 'POST']);
+
+    $routes->add("marmiton_manage_ingredient", "/admin/ingredients/manage")
+        ->controller([ManageIngredientController::class, "manage"])
+        ->methods(['GET']);
+
+    $routes->add("marmiton_manage_ingredient", "/admin/ingredient/delete")
+        ->controller([IngredientController::class, "delete"])
+        ->methods(['POST']);
+
+    $routes->add("marmiton_manage_ingredient", "/admin/ingredient/:id/edit")
+        ->controller([IngredientController::class, "edit"])
+        ->methods(['POST', 'GET']);
+
+    $routes->add("marmiton_update_recipe", "/admin/ingredient/:id/update")
+        ->controller([IngredientController::class, "update"])
+        ->methods(['POST', 'GET']);
+
+    $routes->add("marmiton_confirm_registration", "/registration/confirm")
+        ->controller([RegistrationController::class, "confirm"])
+        ->methods(['GET']);
+
+    $routes->add("marmiton_confirm_registration", "/recipe/:id/consult")
+        ->controller([RecipeController::class, "consult"])
+        ->methods(['GET']);
+
+    $routes->add("marmiton_user_recipe", "/user/my-recipes")
+        ->controller([UserController::class, "consultRecipesUser"])
+        ->methods(['GET']);
+
+    $routes->add("marmiton_user_create_recipe", "/user/create-recipe")
+        ->controller([RecipeController::class, "add"])
+        ->methods(['GET']);
+
+    $routes->add("marmiton_user_recipe", "/recipe/:id/consult")
+        ->controller([RecipeController::class, "consultRecipeUser"])
+        ->methods(['GET']);
 };
