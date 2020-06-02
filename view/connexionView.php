@@ -8,6 +8,7 @@
                     <h4 class="card-title mt-3">Connexion</h4>
                 </header>
                 <article class="card-body p-5">
+                    <?php if(!empty($message)) { echo "<div class='alert alert-success' role='alert'> $message</div>"; } ?>
                     <form method="post" action="<?= $this->getIndex() . "/login" ?>">
                         <div class="form-group">
                             <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Nom d'utilisateur...">

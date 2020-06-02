@@ -4,14 +4,16 @@
             <a class="navbar-brand" href="<?= $this->getIndex() ?>">Marmiton Cnam</a>
             <!-- Navbar left -->
             <div class="navbar-collapse collapse mr-auto">
-                <ul class="navbar-nav">
+                <?php if($_SESSION['user']) {?>
+                    <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $this->getIndex() . "/categories" ?>">Recettes</a>
+                        <a class="nav-link" href="<?=$this->path('marmiton_user_recipe') ?>">Mes recettes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= $this->getIndex() . "/produits" ?>">Ingredients</a>
+                        <a class="nav-link" href="<?=$this->path('marmiton_user_create_recipe')?>">Créer une recette</a>
                     </li>
                 </ul>
+                <?php }?>
             </div>
 
             <!-- Navbar right -->
@@ -40,7 +42,6 @@
                     <?php } ?>
                 </ul>
             </div>
-
         </div>
     </nav>
 </header>

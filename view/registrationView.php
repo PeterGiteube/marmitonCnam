@@ -12,29 +12,33 @@
                         <div class="form-row">
                             <div class="col form-group">
                                 <label>Nom </label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input name="last-name" type="text" class="form-control" placeholder="">
                             </div>
                             <div class="col form-group">
                                 <label>Prenom</label>
-                                <input type="text" class="form-control" placeholder=" ">
+                                <input name="first-name" type="text" class="form-control" placeholder=" ">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" class="form-control" placeholder="">
+                            <input name="email" type="email" class="form-control" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label>Pseudo</label>
+                            <input name="pseudo" type="text" class="form-control" placeholder="">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label>Ville</label>
-                                <input type="text" class="form-control">
+                                <input name="city" type="text" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Mot de passe</label>
-                            <input class="form-control" type="password" placeholder="Mot de passe">
+                            <input name="password" class="form-control" type="password" placeholder="Mot de passe">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="password" placeholder="Confirmation Mot de passe">
+                            <input name="confirm-password" class="form-control" type="password" placeholder="Confirmation Mot de passe">
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block"> S'inscrire  </button>
@@ -47,6 +51,8 @@
 
     </div>
 </div>
+
+<?php echo $error ?>
 
 
 

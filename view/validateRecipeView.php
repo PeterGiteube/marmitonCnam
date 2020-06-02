@@ -28,3 +28,4 @@
         <?php include_once "recipeModalView.php";?>
     </div>
 </div>
+</div>

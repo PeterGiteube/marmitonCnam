@@ -1,5 +1,7 @@
 <?php include_once "adminHeader.php"; ?>
 
+<?php $this->title = "Ajouter un utilisateur" ?>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -45,6 +47,3 @@
             </div>
         </div>
     </div>
-</div>
-
-<?php echo $error ?>
